@@ -274,6 +274,7 @@ public List<Integer> findAnagrams(String s, String p) {
             if(need.get(c).equals(window.get(c)))
                 valid++;
         }
+        # notice！notice！notice！notice！notice！notice！notice！notice！notice！
         while (right-left>=p.length()){
             if(valid==need.size()){
                 ygq.add(left);

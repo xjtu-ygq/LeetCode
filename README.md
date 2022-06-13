@@ -291,3 +291,90 @@ public List<Integer> findAnagrams(String s, String p) {
     return ygq;
 }
 ```
+
+* 567.字符串的排列
+
+```java
+public boolean checkInclusion(String s1, String s2) {
+    Map<Character,Integer> window=new HashMap<>();
+    Map<Character,Integer> need=new HashMap<>();
+    for(char c:s1.toCharArray())
+        need.put(c,need.getOrDefault(c,0)+1);
+    int left=0,right=0,valid=0;
+    while (right<s2.length()){
+        char c=s2.charAt(right);
+        right++;
+        if(need.containsKey(c)){
+            window.put(c,window.getOrDefault(c,0)+1);
+            if (need.get(c).equals(window.get(c)))
+                valid++;
+        }
+        while (right-left>=s1.length()){
+            if(valid==need.size())
+                return true;
+            char d=s2.charAt(left);
+            left++;
+            if(need.containsKey(d)){
+                if(need.get(d).equals(window.get(d)))
+                    valid--;
+                window.put(d,window.get(d)-1);
+            }
+        }
+    }
+    return false;
+}
+```
+
+* 239.滑动窗口最大值
+
+```java
+# 方案一：滑动窗口超时
+public int maxfun(Queue<Integer> window){
+    int max=window.peek();
+    for(int tmp:window){
+        max=Math.max(max,tmp);
+    }
+    return max;
+}
+public int[] maxSlidingWindow(int[] nums, int k) {
+    Queue<Integer> window=new LinkedList<>();
+    int[] ygq=new int[nums.length-k+1];
+    int count=0;
+    int left=0,right=0;
+    while (right<nums.length){
+        int c=nums[right];
+        right++;
+        window.add(c);
+        while (right-left>=k){
+            ygq[count++]=maxfun(window);
+            int d=nums[left];
+            left++;
+            window.remove();
+        }
+    }
+    return ygq;
+}
+
+# 方案二：单调队列（队列中存储的是索引、索引）
+public int[] maxSlidingWindow(int[] nums, int k) {
+    int n=nums.length;
+    Deque<Integer> deque=new LinkedList<>();
+    for(int i=0;i<k;i++){
+        while (!deque.isEmpty()&&nums[i]>=nums[deque.peekLast()])
+            deque.pollLast();
+        deque.offerLast(i);
+    }
+    int[] ans=new int[n-k+1];
+    ans[0]=nums[deque.peekFirst()];
+    for(int i=k;i<n;i++){
+        while (!deque.isEmpty()&&nums[i]>=nums[deque.peekLast()])
+            deque.pollLast();
+        deque.offerLast(i);
+        while (deque.peekFirst()<=i-k){
+            deque.pollFirst();
+        }
+        ans[i-k+1]=nums[deque.peekFirst()];
+    }
+    return ans;
+}
+```

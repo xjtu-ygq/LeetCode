@@ -378,3 +378,98 @@ public int[] maxSlidingWindow(int[] nums, int k) {
     return ans;
 }
 ```
+
+## 其他双指针算法速记卡
+
+* 26.删除有序数组中的重复项
+
+```java
+public int removeDuplicates(int[] nums) {
+    if(nums.length==0)
+        return 0;
+    int slow=0,fast=0;
+    while (fast<nums.length){
+        if(nums[slow]!=nums[fast]){
+            slow++;
+            nums[slow]=nums[fast];
+        }
+        fast++;
+    }
+    return slow+1;
+}
+```
+
+* 27.移除元素
+
+```java
+public int removeElement(int[] nums, int val) {
+    if(nums.length==0)
+        return 0;
+    int slow=0,fast=0;
+    while (fast<nums.length){
+        if(nums[fast]!=val){
+            nums[slow]=nums[fast];
+            slow++;
+        }
+        fast++;
+    }
+    return slow;
+}
+```
+
+* 283.移动零
+
+```java
+public void moveZeroes(int[] nums) {
+    int slow=0,fast=0;
+    while (fast<nums.length){
+        if(nums[fast]!=0){
+            nums[slow]=nums[fast];
+            slow++;
+        }
+        fast++;
+    }
+    for(int i=slow;i<nums.length;i++){
+        nums[i]=0;
+    }
+}
+```
+
+* 15.三数之和
+
+```java
+public List<List<Integer>> twoSum(int[] nums,int start,int target) {
+    List<List<Integer>> ygq=new ArrayList<>();
+    int left=start,right=nums.length-1;
+    while (left<right){
+        int n1=nums[left],n2=nums[right];
+        int sum=nums[left]+nums[right];
+        if(sum<target){
+            while (left<right&&nums[left]==n1)left++;
+        }
+        else if(sum>target){
+            while (left<right&&nums[right]==n2)right--;
+        }
+        else {
+            List<Integer> tmp=new ArrayList<>();
+            tmp.add(nums[left]);tmp.add(nums[right]);ygq.add(tmp);
+            while (left<right&&nums[left]==n1)left++;
+            while (left<right&&nums[right]==n2)right--;
+        }
+    }
+    return ygq;
+}
+public List<List<Integer>> threeSum(int[] nums) {
+    List<List<Integer>> ygq=new ArrayList<>();
+    Arrays.sort(nums);
+    for(int i=0;i<nums.length;i++){
+        List<List<Integer>> tmps=twoSum(nums,i+1, 0-nums[i]);
+        for(List<Integer> tmp:tmps){
+            tmp.add(nums[i]);
+            ygq.add(tmp);
+        }
+        while (i<nums.length-1&&nums[i]==nums[i+1])i++;
+    }
+    return ygq;
+}
+```

@@ -608,3 +608,52 @@ public int maxArea(int[] height) {
     return res;
 }
 ```
+
+## 链表双指针速记卡
+
+* 2.两数相加
+
+```java
+public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+    ListNode p1=l1,p2=l2;
+    ListNode dummy=new ListNode(-1);
+    ListNode p=dummy;
+    int carry=0;
+    while (p1!=null||p2!=null||carry!=0){
+        int val=carry;
+        if(p1!=null){
+            val+=p1.val;
+            p1=p1.next;
+        }
+        if(p2!=null){
+            val+=p2.val;
+            p2=p2.next;
+        }
+        carry=val/10;
+        val=val%10;
+        p.next=new ListNode(val);
+        p=p.next;
+    }
+    return dummy.next;
+}
+```
+
+* 19.删除链表的倒数第 N 个结点
+
+```java
+public ListNode removeNthFromEnd(ListNode head, int n) {
+     ListNode dummy=new ListNode(-1);
+     dummy.next=head;
+     ListNode slow=dummy;
+     ListNode fast=dummy;
+     for(int i=0;i<=n;i++){
+         fast=fast.next;
+     }
+     while (fast!=null){
+         fast=fast.next;
+         slow=slow.next;
+     }
+     slow.next=slow.next.next;
+     return dummy.next;
+}
+```

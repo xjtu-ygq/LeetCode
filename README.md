@@ -473,3 +473,99 @@ public List<List<Integer>> threeSum(int[] nums) {
     return ygq;
 }
 ```
+
+* 18.四数之和
+
+```java
+public List<List<Integer>> twoSum(int[] nums, int start,int target) {
+    int n=nums.length;
+    int left=start,right=n-1;
+    List<List<Integer>> ygq=new ArrayList<>();
+    while (left<right){
+        int sum=nums[left]+nums[right];
+        int n1=nums[left],n2=nums[right];
+        if(sum<target){
+            while (left<right&&nums[left]==n1)left++;
+        }else if(sum>target){
+            while (left<right&&nums[right]==n2)right--;
+        }else {
+            List<Integer> tmp=new ArrayList<>();
+            tmp.add(nums[left]);tmp.add(nums[right]);ygq.add(tmp);
+            while (left<right&&nums[left]==n1)left++;
+            while (left<right&&nums[right]==n2)right--;
+        }
+    }
+    return ygq;
+}
+
+public List<List<Integer>> threeSum(int[] nums, int start,int target) {
+    int n=nums.length;
+    List<List<Integer>> ygq=new ArrayList<>();
+    for(int i=start;i<n;i++){
+        List<List<Integer>> tmps=twoSum(nums,i+1,target-nums[i]);
+        for(List<Integer> tmp:tmps){
+            tmp.add(nums[i]);
+            ygq.add(tmp);
+        }
+        while (i<n-1&&nums[i]==nums[i+1])i++;
+    }
+    return ygq;
+}
+
+public List<List<Integer>> fourSum(int[] nums, int target) {
+    int n=nums.length;
+    Arrays.sort(nums);
+    List<List<Integer>> ygq=new ArrayList<>();
+    for(int i=0;i<n;i++){
+        List<List<Integer>> tmps=threeSum(nums,i+1,target-nums[i]);
+        for(List<Integer> tmp:tmps){
+            tmp.add(nums[i]);
+            ygq.add(tmp);
+        }
+        while (i<n-1&&nums[i]==nums[i+1])i++;
+    }
+    return ygq;
+}
+```
+
+* 870.优势洗牌
+
+```java
+public int index(List<Integer> nums, int target){
+    if(nums.size()==0)
+        return -1;
+    int left=0,right=nums.size()-1;
+    while (left<=right){
+        int mid=left+(right-left)/2;
+        if(nums.get(mid)>target){
+            right=mid-1;
+        }else if(nums.get(mid)<target){
+            left=mid+1;
+        }else {
+            while (mid<nums.size()&&nums.get(mid)==target)mid++;
+            return mid;
+        }
+    }
+    return left;
+}
+
+public int[] advantageCount(int[] nums1, int[] nums2) {
+    Arrays.sort(nums1);
+    int[] ygq=new int[nums1.length];
+    int count=0;
+    List<Integer> tmp=new ArrayList<>();
+    for(int i:nums1)
+        tmp.add(i);
+    for(int i=0;i<nums2.length;i++){
+        int index=index(tmp,nums2[i]);
+        if(index>=tmp.size()){
+            ygq[count++]=tmp.get(0);
+            tmp.remove(0);
+        }else {
+            ygq[count++]=tmp.get(index);
+            tmp.remove(index);
+        }
+    }
+    return ygq;
+}
+```

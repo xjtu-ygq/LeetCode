@@ -569,3 +569,42 @@ public int[] advantageCount(int[] nums1, int[] nums2) {
     return ygq;
 }
 ```
+
+* 42.接雨水
+
+```java
+public int trap(int[] height) {
+    int left=0,right=height.length-1;
+    int res=0;
+    int l_max=height[left],r_max=height[right];
+    while (left<right){
+        l_max=Math.max(l_max,height[left]);
+        r_max=Math.max(r_max,height[right]);
+        if(l_max<r_max){
+            res+=l_max-height[left];
+            left++;
+        }else {
+            res+=r_max-height[right];
+            right--;
+        }
+    }
+    return res;
+}
+```
+
+* 11.盛最多水的容器
+
+```java
+public int maxArea(int[] height) {
+    int left=0,right=height.length-1;
+    int res=0;
+    while (left<right){
+        res=Math.max(res,Math.min(height[right],height[left])*(right-left));
+        if(height[left]<=height[right])
+            left++;
+        else
+            right--;
+    }
+    return res;
+}
+```

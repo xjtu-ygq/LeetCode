@@ -657,3 +657,97 @@ public ListNode removeNthFromEnd(ListNode head, int n) {
      return dummy.next;
 }
 ```
+
+* 21.合并两个有序链表
+
+```java
+public ListNode mergeTwoLists(ListNode list1, ListNode list2) {
+    ListNode dummy=new ListNode(-1);
+    ListNode p=dummy;
+    while (list1!=null||list2!=null){
+        if(list1==null){
+            p.next=list2;
+            break;
+        }else if(list2==null){
+            p.next=list1;
+            break;
+        }else {
+            if(list1.val<list2.val){
+                p.next=list1;
+                p=p.next;
+                list1=list1.next;
+            }else {
+                p.next=list2;
+                p=p.next;
+                list2=list2.next;
+            }
+        }
+
+    }
+    return dummy.next;
+}
+```
+
+* 23.合并K个升序链表
+
+```java
+public ListNode mergeKLists(ListNode[] lists) {
+     if(lists.length==0)
+         return null;
+     ListNode dummy=new ListNode(-1);
+     ListNode p=dummy;
+    PriorityQueue<ListNode> pq=new PriorityQueue<>(lists.length,(a,b)->(a.val-b.val));
+    for(ListNode list:lists){
+        if(list!=null)
+            pq.add(list);
+    }
+    while (!pq.isEmpty()){
+        ListNode node=pq.poll();
+        p.next=node;
+        p=p.next;
+        if(node.next!=null)
+            pq.add(node.next);
+    }
+    return dummy.next;
+}
+```
+
+* 141.环形链表
+
+```java
+public boolean hasCycle(ListNode head) {
+     if(head==null)
+         return false;
+    ListNode slow=head,fast=head;
+    while (fast.next!=null&&fast.next.next!=null){
+        fast=fast.next.next;
+        slow=slow.next;
+        if(fast==slow)
+            return true;
+    }
+    return false;
+}
+```
+
+* 142.环形链表II
+
+```java
+public ListNode detectCycle(ListNode head) {
+    ListNode dummy=new ListNode(-1);
+    ListNode p=dummy;
+    ListNode slow=head,fast=head;
+    while (fast!=null&&fast.next!=null&&fast.next.next!=null){
+        slow=slow.next;
+        fast=fast.next.next;
+        if(slow==fast){
+            fast=head;
+            while (slow!=fast){
+                slow=slow.next;
+                fast=fast.next;
+            }
+            return slow;
+        }
+    }
+    return null;
+}
+```

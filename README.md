@@ -751,3 +751,78 @@ public ListNode detectCycle(ListNode head) {
     return null;
 }
 ```
+
+* 160.相交链表
+
+```java
+public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+    ListNode p1=headA,p2=headB;
+    while (p1!=p2&&p1!=null){
+        while (p2!=null){
+            p2=p2.next;
+            if(p1==p2){
+                return p1;
+            }
+        }
+        p2=headB;
+        p1=p1.next;
+    }
+    return p1;
+}
+```
+
+* 876.链表的中间结点
+
+```java
+public ListNode middleNode(ListNode head) {
+     if(head==null)
+         return null;
+     ListNode slow=head,fast=head;
+     while (fast.next!=null&&fast.next.next!=null){
+         fast=fast.next.next;
+         slow=slow.next;
+     }
+     if(fast.next==null)
+         return slow;
+     else
+         return slow.next;
+}
+```
+
+* 25.K个一组翻转链表（*）
+
+```java
+public ListNode reverseKGroup(ListNode head, int k) {
+    if (head == null) return null;
+    // 区间 [a, b) 包含 k 个待反转元素
+    ListNode a, b;
+    a = b = head;
+    for (int i = 0; i < k; i++) {
+        // 不足 k 个，不需要反转，base case
+        if (b == null) return head;
+        b = b.next;
+    }
+    // 反转前 k 个元素
+    ListNode newHead = reverse(a, b);
+    // 递归反转后续链表并连接起来
+    a.next = reverseKGroup(b, k);
+    return newHead;
+}
+
+/* 反转区间 [a, b) 的元素，注意是左闭右开 */
+ListNode reverse(ListNode a, ListNode b) {
+    ListNode pre, cur, nxt;
+    pre = null;
+    cur = a;
+    nxt = a;
+    // while 终止的条件改一下就行了
+    while (cur != b) {
+        nxt = cur.next;
+        cur.next = pre;
+        pre = cur;
+        cur = nxt;
+    }
+    // 返回反转后的头结点
+    return pre;
+}
+```

@@ -882,3 +882,26 @@ public ListNode reverseBetween(ListNode head, int left, int right) {
     return dummy.next;
 }
 ```
+
+* 234.回文链表
+
+```java
+public boolean isPalindrome(ListNode head) {
+    ListNode dummy=new ListNode(-1);
+    ListNode p2=head;
+    while (p2!=null){
+        ListNode tmp=dummy.next;
+        dummy.next=new ListNode(p2.val);
+        dummy.next.next=tmp;
+        p2=p2.next;
+    }
+    ListNode p1=dummy.next;
+    while (head!=null){
+        if(head.val!=p1.val)
+            return false;
+        p1=p1.next;
+        head=head.next;
+    }
+    return true;
+}
+```

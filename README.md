@@ -826,3 +826,59 @@ ListNode reverse(ListNode a, ListNode b) {
     return pre;
 }
 ```
+
+* 83.删除排序链表中的重复元素
+
+```java
+public ListNode deleteDuplicates(ListNode head) {
+    if(head==null)
+        return head;
+    ListNode slow=head,fast=head.next;
+    while (fast!=null){
+        if(fast.val==slow.val){
+            fast=fast.next;
+        }else {
+            slow.next=fast;
+            slow=slow.next;
+            fast=fast.next;
+        }
+    }
+    slow.next=null;
+    return head;
+}
+```
+
+* 92.反转链表II
+
+```java
+ public ListNode reverse(ListNode slow,ListNode fast){
+     ListNode pre=null;
+     ListNode cur=slow;
+     ListNode next=slow;
+     while (cur!=fast){
+         next=cur.next;
+         cur.next=pre;
+         pre=cur;
+         cur=next;
+     }
+     return pre;
+ }
+public ListNode reverseBetween(ListNode head, int left, int right) {
+    if(head==null||left==right)
+        return head;
+    ListNode dummy=new ListNode(-1);
+    dummy.next=head;
+    ListNode slow=head,fast=head;
+    ListNode tmp=dummy;
+    for(int i=0;i<right;i++){
+        if(i<left-1){
+            tmp=slow;
+            slow=slow.next;
+        }
+        fast=fast.next;
+    }
+    tmp.next=reverse(slow,fast);
+    slow.next=fast;
+    return dummy.next;
+}
+```

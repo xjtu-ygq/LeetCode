@@ -941,3 +941,23 @@ public int sumRegion(int row1, int col1, int row2, int col2) {
     return ygq[row2+1][col2+1]-ygq[row2+1][col1]-ygq[row1][col2+1]+ygq[row1][col1];
 }
 ```
+
+* 560.和为K的子数组
+
+```java
+public int subarraySum(int[] nums, int k) {
+    int ygq[]=new int[nums.length+1];
+    ygq[0]=0;
+    for(int i=1;i<nums.length+1;i++){
+        ygq[i]=ygq[i-1]+nums[i-1];
+    }
+    int count=0;
+    for(int i=0;i<nums.length;i++){
+        for(int j=i+1;j<nums.length+1;j++){
+            if(ygq[j]-ygq[i]==k)
+                count++;
+        }
+    }
+    return count;
+}
+```

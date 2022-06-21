@@ -961,3 +961,44 @@ public int subarraySum(int[] nums, int k) {
     return count;
 }
 ```
+
+## 查分数组速记卡
+
+* 1109.航班预订统计
+
+```java
+public int[] corpFlightBookings(int[][] bookings, int n) {
+    Difference df=new Difference(new int[n]);
+    for(int[] booking:bookings){
+        int i=booking[0]-1;
+        int j=booking[1]-1;
+        int val=booking[2];
+        df.increment(i,j,val);
+    }
+    return df.result();
+}
+class Difference{
+    private int[] df;
+    public Difference(int[] nums){
+        df=new int[nums.length];
+        df[0]=nums[0];
+        for(int i=1;i<nums.length;i++){
+            df[i]=nums[i]-nums[i-1];
+        }
+    }
+
+    public void increment(int i,int j,int val){
+        df[i]+=val;
+        if(j+1<df.length)
+            df[j+1]-=val;
+    }
+
+    public int[] result(){
+        int[] ygq=new int[df.length];
+        ygq[0]=df[0];
+        for(int i=1;i<df.length;i++)
+            ygq[i]=ygq[i-1]+df[i];
+        return ygq;
+    }
+}
+```

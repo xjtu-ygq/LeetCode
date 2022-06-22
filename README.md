@@ -1002,3 +1002,46 @@ class Difference{
     }
 }
 ```
+
+* 1094.拼车
+
+```java
+public boolean carPooling(int[][] trips, int capacity) {
+    int[] nums=new int[1001];
+    Difference df=new Difference(nums);
+    for(int[] trip:trips){
+        int i=trip[1];
+        int j=trip[2]-1;
+        int val=trip[0];
+        df.increment(i,j,val);
+    }
+    int[] ygq=df.result();
+    for(int i=0;i<ygq.length;i++){
+        if(ygq[i]>capacity)
+            return false;
+    }
+    return true;
+}
+class Difference{
+     private int[] df;
+     public Difference(int[] nums){
+         df=new int[nums.length];
+         df[0]=nums[0];
+         for(int i=1;i<nums.length;i++)
+             df[i]=nums[i]-nums[i-1];
+     }
+     public void increment(int i,int j,int val){
+         df[i]+=val;
+         if(j+1<df.length)
+             df[j+1]-=val;
+     }
+     public int[] result(){
+         int ygq[]=new int[df.length];
+         ygq[0]=df[0];
+         for(int i=1;i<ygq.length;i++){
+             ygq[i]=ygq[i-1]+df[i];
+         }
+         return ygq;
+     }
+}
+```

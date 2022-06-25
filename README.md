@@ -1153,3 +1153,105 @@ public boolean empty() {
     return q.isEmpty();
 }
 ```
+
+* 32.最长有效括号
+
+```java
+public int longestValidParentheses(String s) {
+    Stack<Integer> stack=new Stack<>();
+    int[] dp=new int[s.length()];
+    for(int i=0;i<s.length();i++){
+        if(s.charAt(i)=='('){
+            stack.push(i);
+            dp[i+1]=0;
+        }else {
+            if(!stack.isEmpty()){
+                int left=stack.pop();
+                int len=1+i-left+dp[left];
+                dp[i+1]=len;
+            }else {
+                dp[i+1]=0;
+            }
+        }
+    }
+    int res=0;
+    for(int i=0;i<dp.length;i++)
+        res=Math.max(res,dp[i]);
+    return res;
+}
+```
+
+* 1541.平衡括号字符串的最少插入次数
+
+```java
+public int minInsertions(String s) {
+    int res=0,need=0;
+    for(int i=0;i<s.length();i++){
+        if(s.charAt(i)=='('){
+            need+=2;
+            if(need%2==1){
+                res++;
+                need--;
+            }
+        }else {
+            need--;
+            if(need==-1){
+                res++;
+                need=1;
+            }
+        }
+    }
+    return res+need;
+}
+```
+
+* 921.使括号有效的最少添加
+
+```java
+public int minAddToMakeValid(String s) {
+    int res=0,need=0;
+    Stack<Character> stack=new Stack<>();
+    for(int i=0;i<s.length();i++){
+        if(s.charAt(i)=='('){
+            need++;
+            stack.push(s.charAt(i));
+        }else {
+            if(!stack.isEmpty()){
+                need--;
+                stack.pop();
+            }else {
+                res++;
+            }
+        }
+    }
+    return res+need;
+}
+```
+
+* 20.有效的括号
+
+```java
+public boolean isValid(String s) {
+    Stack<Character> stack=new Stack<>();
+    for(int i=0;i<s.length();i++){
+        char c=s.charAt(i);
+        if(c=='('||c=='['||c=='{'){
+            stack.push(c);
+        }else {
+            if(!stack.isEmpty()){
+                char d=stack.peek();
+                if((d=='('&&c==')')||(d=='['&&c==']')||(d=='{'&&c=='}'))
+                    stack.pop();
+                else
+                    return false;
+            }else {
+                return false;
+            }
+        }
+    }
+    if(stack.isEmpty())
+        return true;
+    else
+        return false;
+}
+```

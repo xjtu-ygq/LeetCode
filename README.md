@@ -1255,3 +1255,73 @@ public boolean isValid(String s) {
         return false;
 }
 ```
+
+## 二叉堆算法速记卡
+
+* 23.合并K个升序链表
+
+```java
+public ListNode mergeKLists(ListNode[] lists) {
+     if(lists.length==0)
+         return null;
+     ListNode dummy=new ListNode(-1);
+     ListNode p=dummy;
+    PriorityQueue<ListNode> pq=new PriorityQueue<>(lists.length,(a,b)->(a.val-b.val));
+    for(ListNode list:lists){
+        if(list!=null)
+            pq.add(list);
+    }
+    while (!pq.isEmpty()){
+        ListNode node=pq.poll();
+        p.next=node;
+        p=p.next;
+        if(node.next!=null)
+            pq.add(node.next);
+    }
+    return dummy.next;
+}
+```
+
+* 215.数组中的第K个最大元素
+
+```java
+public int findKthLargest(int[] nums, int k) {
+    PriorityQueue<Integer> pq=new PriorityQueue<>();
+    for(int num:nums){
+        pq.offer(num);
+        if(pq.size()>k)
+            pq.poll();
+    }
+    return pq.peek();
+}
+```
+
+* 295.数据流的中位数
+
+```java
+PriorityQueue<Integer> large;
+PriorityQueue<Integer> small;
+public MedianFinder() {
+    large=new PriorityQueue<>((a,b)->(b-a));
+    small=new PriorityQueue<>();
+}
+
+public void addNum(int num) {
+    if(small.size()>=large.size()){
+        small.add(num);
+        large.offer(small.poll());
+    }else {
+        large.add(num);
+        small.offer(large.poll());
+    }
+}
+
+public double findMedian() {
+    if(small.size()>large.size())
+        return small.peek();
+    else if(small.size()<large.size())
+        return large.peek();
+    else
+        return (small.peek()+large.peek())/2.0;
+}
+```

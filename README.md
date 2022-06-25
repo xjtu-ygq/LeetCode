@@ -1085,3 +1085,71 @@ public void merge(int[] nums1, int m, int[] nums2, int n) {
     }
 }
 ```
+
+## 队列/栈算法速记卡
+
+* 232.用栈实现队列
+
+```java
+private Stack<Integer> s1,s2;
+
+public MyQueue() {
+    s1=new Stack<>();
+    s2=new Stack<>();
+}
+
+public void push(int x) {
+    s1.push(x);
+}
+
+public int pop() {
+    peek();
+    return s2.pop();
+}
+
+public int peek() {
+    if(s2.isEmpty()){
+        while (!s1.isEmpty())
+            s2.push(s1.pop());
+    }
+    return s2.peek();
+}
+
+public boolean empty() {
+    return s1.isEmpty()&&s2.isEmpty();
+}
+```
+
+* 225.用队列实现栈
+
+```java
+private Queue<Integer> q=new LinkedList<>();
+int top_elem=0;
+public MyStack() {
+
+}
+
+public void push(int x) {
+    q.offer(x);
+    top_elem=x;
+}
+
+public int pop() {
+    int size=q.size();
+    while (size>2){
+        q.offer(q.poll());
+        size--;
+    }
+    top_elem=q.peek();
+    q.offer(q.poll());
+    return q.poll();
+}
+
+public int top() {
+    return top_elem;
+}
+
+public boolean empty() {
+    return q.isEmpty();
+}
+```

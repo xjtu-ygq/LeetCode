@@ -1,6 +1,8 @@
 # LeetCode
 
-## 二分搜索速记卡
+## 基础数据结构
+
+### 二分搜索速记卡
 
 * 704.二分查找
 
@@ -195,7 +197,7 @@ public int maxEnvelopes(int[][] envelopes) {
 }
 ```
 
-## 滑动窗口速记卡
+### 滑动窗口速记卡
 
 * 76.最小覆盖子串
 
@@ -379,7 +381,7 @@ public int[] maxSlidingWindow(int[] nums, int k) {
 }
 ```
 
-## 其他双指针算法速记卡
+### 其他双指针算法速记卡
 
 * 26.删除有序数组中的重复项
 
@@ -609,7 +611,7 @@ public int maxArea(int[] height) {
 }
 ```
 
-## 链表双指针速记卡
+### 链表双指针速记卡
 
 * 2.两数相加
 
@@ -906,7 +908,7 @@ public boolean isPalindrome(ListNode head) {
 }
 ```
 
-## 前缀和技巧速记卡
+### 前缀和技巧速记卡
 
 * 303.区域和检索 - 数组不可变
 
@@ -962,7 +964,7 @@ public int subarraySum(int[] nums, int k) {
 }
 ```
 
-## 查分数组速记卡
+### 查分数组速记卡
 
 * 1109.航班预订统计
 
@@ -1086,7 +1088,7 @@ public void merge(int[] nums1, int m, int[] nums2, int n) {
 }
 ```
 
-## 队列/栈算法速记卡
+### 队列/栈算法速记卡
 
 * 232.用栈实现队列
 
@@ -1256,7 +1258,7 @@ public boolean isValid(String s) {
 }
 ```
 
-## 二叉堆算法速记卡
+### 二叉堆算法速记卡
 
 * 23.合并K个升序链表
 
@@ -1325,3 +1327,22 @@ public double findMedian() {
         return (small.peek()+large.peek())/2.0;
 }
 ```
+
+## 进阶数据结构
+
+### 二叉树算法速记卡
+
+* 104.二叉树的最大深度
+
+```java
+public int maxDepth(TreeNode root) {
+    if(root==null)
+        return 0;
+    int len1=maxDepth(root.left);
+    int len2=maxDepth(root.right);
+    return 1+Math.max(len1,len2);
+}
+```
+
+* 105.从前序与中序遍历序列构造二叉树
+

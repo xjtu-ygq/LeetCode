@@ -1346,4 +1346,94 @@ public int maxDepth(TreeNode root) {
 
 * 105.从前序与中序遍历序列构造二叉树
 
+```java
+private Map<Integer,Integer> index;
+public TreeNode build(int[] preorder, int[] inorder,int pre_left,int pre_right,int in_left,int in_right){
+    if(pre_left>pre_right)
+        return null;
+    int pre_root=pre_left;
+    int in_root=index.get(preorder[pre_root]);
+    TreeNode root=new TreeNode(preorder[pre_root]);
+    int left_size=in_root-in_left;
+    root.left=build(preorder,inorder,pre_left+1,pre_left+left_size,in_left,in_root-1);
+    root.right=build(preorder,inorder,pre_left+left_size+1,pre_right,in_root+1,in_right);
+    return root;
+}
+public TreeNode buildTree(int[] preorder, int[] inorder) {
+    int n=preorder.length;
+    index=new HashMap<>();
+    for(int i=0;i<n;i++)
+        index.put(inorder[i],i);
+    return build(preorder,inorder,0,n-1,0,n-1);
+}
+```
 
+* 106.从中序与后序遍历序列构造二叉树
+
+```java
+private Map<Integer,Integer> index;
+public TreeNode build(int[] inorder, int[] postorder,int in_left,int in_right,int p_left,int p_right){
+    if(in_left>in_right)
+        return null;
+    int p_root=p_right;
+    int in_root=index.get(postorder[p_root]);
+    int left_size=in_root-in_left;
+    TreeNode root=new TreeNode(inorder[in_root]);
+    root.left=build(inorder,postorder,in_left,in_root-1,p_left,p_left+left_size-1);
+    root.right=build(inorder,postorder,in_root+1,in_right,p_left+left_size,p_root-1);
+    return root;
+}
+public TreeNode buildTree(int[] inorder, int[] postorder) {
+    index=new HashMap<>();
+    int n=inorder.length;
+    for(int i=0;i<n;i++)
+        index.put(inorder[i],i);
+    return build(inorder,postorder,0,n-1,0,n-1);
+}
+```
+
+* 102.二叉树的层序遍历
+
+```java
+public List<List<Integer>> levelOrder(TreeNode root) {
+    List<List<Integer>> ygq=new LinkedList<>();
+    if(root==null)
+        return ygq;
+    Queue<TreeNode> queue=new LinkedList<>();
+    queue.offer(root);
+    while (!queue.isEmpty()){
+        int size=queue.size();
+        List<Integer> tmp=new ArrayList<>();
+        for(int i=0;i<size;i++){
+            TreeNode node=queue.poll();
+            tmp.add(node.val);
+            if(node.left!=null)
+                queue.offer(node.left);
+            if(node.right!=null)
+                queue.offer(node.right);
+        }
+        ygq.add(tmp);
+    }
+    return ygq;
+}
+```
+
+* 111.二叉树的最小深度
+
+```java
+public int minDepth(TreeNode root) {
+    if(root==null)
+        return 0;
+    if(root.left!=null&&root.right!=null){
+        int left=minDepth(root.left);
+        int right=minDepth(root.right);
+        return Math.min(left,right)+1;
+    }else if(root.left!=null&&root.right==null){
+        return minDepth(root.left)+1;
+    }else if(root.left==null&&root.right!=null){
+        return minDepth(root.right)+1;
+    }else {
+        return 1;
+    }
+}
+```

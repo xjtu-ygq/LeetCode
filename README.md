@@ -1483,3 +1483,76 @@ public void flatten(TreeNode root) {
     p.right=right;
 }
 ```
+
+* 116.填充每个节点的下一个右侧节点指针
+
+```java
+public Node connect(Node root) {
+    if(root==null)
+        return null;
+    connettwo(root.left,root.right);
+    return root;
+}
+public void connettwo(Node node1,Node node2){
+    if(node1==null||node2==null)
+        return;
+    node1.next=node2;
+    connettwo(node1.left,node1.right);
+    connettwo(node2.left,node2.right);
+    connettwo(node1.right,node2.left);
+}
+```
+
+* 226.翻转二叉树
+
+```java
+public TreeNode invertTree(TreeNode root) {
+    if(root==null)
+        return null;
+    TreeNode tmp=root.left;
+    root.left=root.right;
+    root.right=tmp;
+    invertTree(root.left);
+    invertTree(root.right);
+    return root;
+}
+```
+
+* 297.二叉树的序列化与反序列化
+
+```java
+// Encodes a tree to a single string.
+public String serialize(TreeNode root) {
+    return reserialize(root,"");
+}
+
+// Decodes your encoded data to tree.
+public TreeNode deserialize(String data) {
+    String[] datastr=data.split(",");
+    List<String> dataList=new ArrayList<>(Arrays.asList(datastr));
+    return redeserialize(dataList);
+}
+
+public String reserialize(TreeNode root,String str){
+    if(root==null){
+        str+="None,";
+    }else{
+        str+=String.valueOf(root.val)+",";
+        str=reserialize(root.left,str);
+        str=reserialize(root.right,str);
+    }
+    return str;
+}
+
+public TreeNode redeserialize(List<String> dataList){
+    if(dataList.get(0).equals("None")){
+        dataList.remove(0);
+        return null;
+    }
+    TreeNode root=new TreeNode(Integer.valueOf(dataList.get(0)));
+    dataList.remove(0);
+    root.left=redeserialize(dataList);
+    root.right=redeserialize(dataList);
+    return root;
+}
+```

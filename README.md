@@ -1437,3 +1437,49 @@ public int minDepth(TreeNode root) {
     }
 }
 ```
+
+* 最大二叉树
+
+```java
+public TreeNode c_Tree(int[] nums,int left,int right) {
+    if(left>right)
+        return null;
+    int n_max=nums[left];
+    int count=left;
+    for(int i=left;i<=right;i++){
+        if(nums[i]>=n_max){
+            n_max=nums[i];
+            count=i;
+        }
+    }
+    TreeNode root=new TreeNode(n_max);
+    root.left=c_Tree(nums,left,count-1);
+    root.right=c_Tree(nums,count+1,right);
+    return root;
+}
+public TreeNode constructMaximumBinaryTree(int[] nums) {
+    int n=nums.length;
+    if(n==0)
+        return null;
+    return c_Tree(nums,0,n-1);
+}
+```
+
+* 114.二叉树展开为链表
+
+```java
+public void flatten(TreeNode root) {
+    if(root==null)
+        return;
+    flatten(root.left);
+    flatten(root.right);
+    TreeNode left=root.left;
+    TreeNode right=root.right;
+    root.left=null;
+    root.right=left;
+    TreeNode p=root;
+    while (p.right!=null)
+        p=p.right;
+    p.right=right;
+}
+```

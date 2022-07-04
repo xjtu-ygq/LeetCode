@@ -1556,3 +1556,37 @@ public TreeNode redeserialize(List<String> dataList){
     return root;
 }
 ```
+
+* 652.寻找重复的子树
+
+```java
+Map<String,Integer> map;
+List<TreeNode> node;
+public List<TreeNode> findDuplicateSubtrees(TreeNode root) {
+    map=new HashMap<>();
+    node=new ArrayList<>();
+    collect(root);
+    return node;
+}
+public String collect(TreeNode root){
+    if(root==null)
+        return "#";
+    String str=String.valueOf(root.val)+","+collect(root.left)+","+collect(root.right);
+    map.put(str,map.getOrDefault(str,0)+1);
+    if(map.get(str)==2)
+        node.add(root);
+    return str;
+}
+```
+
+* 222.完全二叉树的节点个数
+
+```java
+public int countNodes(TreeNode root) {
+    if(root==null)
+        return 0;
+    int left=countNodes(root.left);
+    int right=countNodes(root.right);
+    return left+right+1;
+}
+```

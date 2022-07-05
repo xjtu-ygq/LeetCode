@@ -1590,3 +1590,79 @@ public int countNodes(TreeNode root) {
     return left+right+1;
 }
 ```
+
+### 二叉搜索树速记卡
+
+* 700.二叉搜索树中的搜索
+
+```java
+public TreeNode searchBST(TreeNode root, int val) {
+    if(root==null)
+        return null;
+    if(root.val>val)
+        return searchBST(root.left,val);
+    if(root.val<val)
+        return searchBST(root.right,val);
+    return root;
+}
+```
+
+* 701.二叉搜索树中的插入操作
+
+```java
+public TreeNode insertIntoBST(TreeNode root, int val) {
+    if(root==null)
+        return new TreeNode(val);
+    inserT(root,val);
+    return root;
+}
+public void inserT(TreeNode root, int val){
+    if(root.val<val){
+        if(root.right==null){
+            root.right=new TreeNode(val);
+            return;
+        }else {
+            inserT(root.right,val);
+        }
+    }
+    if(root.val>val){
+        if(root.left==null){
+            root.left=new TreeNode(val);
+            return;
+        }else {
+            inserT(root.left,val);
+        }
+    }
+    return;
+}
+```
+
+* 450.删除二叉搜索树中的节点
+
+```java
+public TreeNode deleteNode(TreeNode root, int key) {
+    if(root==null)
+        return null;
+    if(root.val==key){
+        if(root.left==null)
+            return root.right;
+        if(root.right==null)
+            return root.left;
+        TreeNode tmp=find(root.right);
+        deleteNode(root,tmp.val);
+        tmp.left=root.left;
+        tmp.right=root.right;
+        root=tmp;
+    }else if(root.val>key){
+        root.left=deleteNode(root.left,key);
+    }else {
+        root.right=deleteNode(root.right,key);
+    }
+    return root;
+}
+public TreeNode find(TreeNode root){
+    while (root.left!=null)
+        root=root.left;
+    return root;
+}
+```

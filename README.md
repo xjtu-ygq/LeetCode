@@ -1666,3 +1666,40 @@ public TreeNode find(TreeNode root){
     return root;
 }
 ```
+
+* 98.验证二叉搜索树
+
+```java
+public boolean isValidBST(TreeNode root) {
+    return ValidBST(root,null,null);
+}
+public boolean ValidBST(TreeNode root,TreeNode min,TreeNode max) {
+    if(root==null)
+        return true;
+    if(min!=null&&root.val<=min.val)return false;
+    if(max!=null&&root.val>=max.val)return false;
+    return ValidBST(root.left,min,root)&&ValidBST(root.right,root,max);
+}
+```
+
+* 230.二叉搜索树中第K小的元素
+
+```java
+private int count=0;
+private int ans=0;
+public int kthSmallest(TreeNode root, int k) {
+    Kth(root,k);
+    return ans;
+}
+public void Kth(TreeNode root,int k){
+    if(root==null)
+        return;
+    Kth(root.left,k);
+    count++;
+    if(count==k){
+        ans=root.val;
+        return;
+    }
+    Kth(root.right,k);
+}
+```

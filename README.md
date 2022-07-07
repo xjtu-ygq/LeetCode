@@ -1703,3 +1703,49 @@ public void Kth(TreeNode root,int k){
     Kth(root.right,k);
 }
 ```
+
+* 96.不同的二叉搜索树
+
+```java
+public int numTrees(int n) {
+    int[] dp=new int[n+1];
+    dp[0]=1;
+    dp[1]=1;
+    for(int i=2;i<n+1;i++){
+        for(int j=1;j<=i;j++){
+            dp[i]+=dp[j-1]*dp[i-j];
+        }
+    }
+    return dp[n];
+}
+```
+
+* 95.不同的二叉搜索树II
+
+```java
+public List<TreeNode> generateTrees(int n) {
+    if(n==0)
+        return new LinkedList<>();
+    return build(1,n);
+}
+public List<TreeNode> build(int low,int high){
+    List<TreeNode> res=new LinkedList<>();
+    if(low>high){
+        res.add(null);
+        return res;
+    }
+    for(int i=low;i<=high;i++){
+        List<TreeNode> left=build(low,i-1);
+        List<TreeNode> right=build(i+1,high);
+        for(TreeNode le:left){
+            for(TreeNode ri:right){
+                TreeNode root=new TreeNode(i);
+                root.left=le;
+                root.right=ri;
+                res.add(root);
+            }
+        }
+    }
+    return res;
+}
+```

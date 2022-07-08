@@ -1749,3 +1749,48 @@ public List<TreeNode> build(int low,int high){
     return res;
 }
 ```
+
+* 538.把二叉搜索树转换为累加树
+
+```java
+int sum = 0;
+public TreeNode convertBST(TreeNode root) {
+    if(root==null)
+        return null;
+    convert(root);
+    return root;
+}
+public void convert(TreeNode root){
+    if(root==null)
+        return ;
+    convert(root.right);
+    sum+=root.val;
+    root.val=sum;
+    convert(root.left);
+}
+```
+
+* 1373.二叉搜索子树的最大键值和
+
+```java
+int ans=0;
+public int maxSumBST(TreeNode root) {
+    isBST(root);
+    return ans;
+}
+public int[] isBST(TreeNode root){
+    if(root==null)
+        return new int[]{1,Integer.MAX_VALUE,Integer.MIN_VALUE,0};
+    int[] left=isBST(root.left);
+    int[] right=isBST(root.right);
+    int[] res=new int[4];
+    if(left[0]==1&&right[0]==1&&root.val>left[2]&&root.val<right[1]){
+        res[0]=1;
+        res[1]=Math.min(root.val,left[1]);
+        res[2]=Math.max(root.val,right[2]);
+        res[3]=left[3]+right[3]+root.val;
+        ans=Math.max(ans,res[3]);
+    }
+    return res;
+}
+```

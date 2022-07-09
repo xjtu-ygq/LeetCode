@@ -1794,3 +1794,107 @@ public int[] isBST(TreeNode root){
     return res;
 }
 ```
+
+### 图论算法速记卡
+
+* 797.所有可能的路径
+
+```java
+List<List<Integer>> ygq=new ArrayList<List<Integer>>();
+Stack<Integer> stack=new Stack<>();
+public List<List<Integer>> allPathsSourceTarget(int[][] graph) {
+    stack.push(0);
+    dfs(graph,stack,0,graph.length-1);
+    return ygq;
+}
+public void dfs(int[][] graph,Stack<Integer> stack,int x,int n){
+    if(x==n){
+        ygq.add(new ArrayList<>(stack));
+        return;
+    }
+    for(int tmp:graph[x]){
+        stack.add(tmp);
+        dfs(graph,stack,tmp,n);
+        stack.pop();
+    }
+}
+```
+
+* 785.判断二分图
+
+```java
+private boolean[] color;
+private boolean[] visited;
+private boolean ok=true;
+public boolean isBipartite(int[][] graph) {
+    int n=graph.length;
+    color=new boolean[n];
+    visited=new boolean[n];
+    for(int i=0;i<n;i++){
+        if(!visited[i]){
+            traverse(graph,i);
+        }
+    }
+    return ok;
+}
+public void traverse(int[][] graph,int v){
+    if(!ok)
+        return;
+    visited[v]=true;
+    for(int i:graph[v]){
+        if(!visited[i]){
+            color[i]=!color[v];
+            traverse(graph,i);
+        }else {
+            if(color[i]==color[v])
+                ok=false;
+        }
+    }
+}
+```
+
+* 886.可能的二分法
+
+```java
+private boolean[] color;
+private boolean[] visited;
+private boolean ok=true;
+public boolean possibleBipartition(int n, int[][] dislikes) {
+    color=new boolean[n+1];
+    visited=new boolean[n+1];
+    List<Integer>[] graph=build(dislikes,n+1);
+    for(int i=1;i<=n;i++){
+        if(!visited[i]){
+            traserve(graph,i);
+        }
+    }
+    return ok;
+}
+public List<Integer>[] build(int[][] dislikes,int n){
+    List<Integer>[] graph=new LinkedList[n];
+    for(int i=1;i<n;i++){
+        graph[i]=new LinkedList<>();
+    }
+    for(int[] e:dislikes){
+        int v=e[0];
+        int w=e[1];
+        graph[v].add(w);
+        graph[w].add(v);
+    }
+    return graph;
+}
+public void traserve(List<Integer>[] graph,int v){
+    if(!ok)
+        return;
+    visited[v]=true;
+    for(int i:graph[v]){
+        if(!visited[i]){
+            color[i]=!color[v];
+            traserve(graph,i);
+        }else {
+            if(color[v]==color[i])
+                ok=false;
+        }
+    }
+}
+```

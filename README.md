@@ -1898,3 +1898,43 @@ public void traserve(List<Integer>[] graph,int v){
     }
 }
 ```
+
+* 207.课程表
+
+```java
+private boolean[] onpath;
+private boolean[] visited;
+private boolean ok=false;
+public boolean canFinish(int numCourses, int[][] prerequisites) {
+    onpath=new boolean[numCourses];
+    visited=new boolean[numCourses];
+    List<Integer>[] graph=build(prerequisites,numCourses);
+    for(int i=0;i<numCourses;i++){
+        traverse(graph,i);
+    }
+    return !ok;
+}
+public void traverse(List<Integer>[] graph,int v){
+    if(onpath[v])
+        ok=true;
+    if(visited[v]||ok)
+        return;
+    visited[v]=true;
+    onpath[v]=true;
+    for(int i:graph[v]){
+        traverse(graph,i);
+    }
+    onpath[v]=false;
+}
+public List<Integer>[] build(int[][] prerequisites,int numCourses){
+    List<Integer>[] graph=new LinkedList[numCourses];
+    for(int i=0;i<numCourses;i++)
+        graph[i]=new LinkedList<>();
+    for(int[] tmp:prerequisites){
+        int v=tmp[0];
+        int w=tmp[1];
+        graph[w].add(v);
+    }
+    return graph;
+}
+```

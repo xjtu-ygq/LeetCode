@@ -1938,3 +1938,51 @@ public List<Integer>[] build(int[][] prerequisites,int numCourses){
     return graph;
 }
 ```
+
+* 210.课程表II
+
+```java
+List<Integer> ygq=new ArrayList<>();
+private boolean[] visited;
+private boolean[] onpath;
+private boolean cycle=false;
+public int[] findOrder(int numCourses, int[][] prerequisites) {
+    visited=new boolean[numCourses];
+    onpath=new boolean[numCourses];
+    List<Integer>[] graph=build(prerequisites,numCourses);
+    for(int i=0;i<numCourses;i++){
+        traverse(graph,i);
+    }
+    if(cycle)
+        return new int[]{};
+    int[] res=new int[numCourses];
+    for(int i=0;i<numCourses;i++){
+        res[numCourses-i-1]=ygq.get(i);
+    }
+    return res;
+}
+public void traverse(List<Integer>[] graph,int v){
+    if(onpath[v])
+        cycle=true;
+    if(visited[v]||cycle)
+        return;
+    visited[v]=true;
+    onpath[v]=true;
+    for(int tmp:graph[v]){
+        traverse(graph,tmp);
+    }
+    ygq.add(v);
+    onpath[v]=false;
+}
+public List<Integer>[] build(int[][] prerequisites,int numCourses){
+    List<Integer>[] graph=new LinkedList[numCourses];
+    for(int i=0;i<numCourses;i++)
+        graph[i]=new LinkedList<>();
+    for(int[] tmp:prerequisites){
+        int v=tmp[0];
+        int w=tmp[1];
+        graph[w].add(v);
+    }
+    return graph;
+}
+```

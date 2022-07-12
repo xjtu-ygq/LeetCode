@@ -1986,3 +1986,154 @@ public List<Integer>[] build(int[][] prerequisites,int numCourses){
     return graph;
 }
 ```
+
+* 130.被围绕的区域
+
+```java
+public class Solution {
+    public void solve(char[][] board) {
+        if(board.length==0)
+            return;
+        int m=board.length;
+        int n=board[0].length;
+        UF uf=new UF(m*n+1);
+        int dummy=m*n;
+        for(int i=0;i<m;i++){
+            if(board[i][0]=='O')
+                uf.union(i*n+0,dummy);
+            if(board[i][n-1]=='O')
+                uf.union(i*n+n-1,dummy);
+        }
+        for(int j=0;j<n;j++){
+            if(board[0][j]=='O')
+                uf.union(n*0+j,dummy);
+            if(board[m-1][j]=='O')
+                uf.union(n*(m-1)+j,dummy);
+        }
+        int[][] d=new int[][]{{1, 0}, {0, 1}, {0, -1}, {-1, 0}};
+        for(int i=1;i<m-1;i++){
+            for(int j=1;j<n-1;j++){
+                if(board[i][j]=='O'){
+                    for(int k=0;k<4;k++){
+                        int x = i + d[k][0];
+                        int y = j + d[k][1];
+                        if (board[x][y] == 'O'){
+                            uf.union(x*n+y,i*n+j);
+                        }
+                    }
+                }
+            }
+        }
+        for(int i=1;i<m-1;i++){
+            for(int j=1;j<n-1;j++){
+                if(!uf.connected(dummy,i*n+j)){
+                    board[i][j]='X';
+                }
+            }
+        }
+    }
+}
+class UF{
+    private int count;
+    private int[] partent;
+    private int[] size;
+    public UF(int n){
+        this.count=n;
+        partent=new int[n];
+        size=new int[n];
+        for(int i=0;i<n;i++){
+            partent[i]=i;
+            size[i]=1;
+        }
+    }
+    public void union(int p,int q){
+        int rootp=find(p);
+        int rootq=find(q);
+        if(rootp==rootq)
+            return;
+        if(size[rootp]>size[rootq]){
+            partent[rootq]=rootp;
+            size[rootp]+=size[rootq];
+        }else {
+            partent[rootp]=rootq;
+            size[rootq]+=size[rootp];
+        }
+        count--;
+    }
+    public boolean connected(int p,int q){
+        int rootp=find(p);
+        int rootq=find(q);
+        return rootp==rootq;
+    }
+    public int find(int x){
+        while (partent[x]!=x){
+            partent[x]=partent[partent[x]];
+            x=partent[x];
+        }
+        return x;
+    }
+}
+```
+
+* 990.等式方程的可满足性
+
+```java
+public class Solution {
+    public boolean equationsPossible(String[] equations) {
+        UF uf=new UF(26);
+        for(String c:equations){
+            if(c.charAt(1)=='='){
+                uf.union(c.charAt(0)-'a',c.charAt(3)-'a');
+            }
+        }
+        for(String c:equations){
+            if(c.charAt(1)=='!'){
+                if(uf.connected(c.charAt(0)-'a',c.charAt(3)-'a'))
+                    return false;
+            }
+        }
+        return true;
+    }
+}
+class UF{
+    private int count;
+    private int[] partent;
+    private int[] size;
+    public UF(int n){
+        this.count=n;
+        partent=new int[n];
+        size=new int[n];
+        for(int i=0;i<n;i++){
+            partent[i]=i;
+            size[i]=1;
+        }
+    }
+    public void union(int p,int q){
+        int rootp=find(p);
+        int rootq=find(q);
+        if(rootp==rootq)
+            return;
+        if(size[rootp]>size[rootq]){
+            partent[rootq]=rootp;
+            size[rootp]+=size[rootq];
+        }else {
+            partent[rootp]=rootq;
+            size[rootq]+=size[rootp];
+        }
+        count--;
+    }
+    public boolean connected(int p,int q){
+        int rootp=find(p);
+        int rootq=find(q);
+        return rootp==rootq;
+    }
+    public int find(int x){
+        while (partent[x]!=x){
+            partent[x]=partent[partent[x]];
+            x=partent[x];
+        }
+        return x;
+    }
+}
+```
+

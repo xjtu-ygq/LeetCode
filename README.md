@@ -2137,3 +2137,135 @@ class UF{
 }
 ```
 
+* 1584.连接所有点的最小费用
+
+```java
+public int minCostConnectPoints(int[][] points) {
+    int n=points.length;
+    List<int[]> edges=new ArrayList<>();
+    for(int i=0;i<n;i++){
+        for(int j=i+1;j<n;j++){
+            int xi=points[i][0],yi=points[i][1];
+            int xj=points[j][0],yj=points[j][1];
+            edges.add(new int[]{i,j,Math.abs(xi-xj)+Math.abs(yi-yj)});
+        }
+    }
+    Collections.sort(edges,(a,b)->{return a[2]-b[2];});
+    int mst=0;
+    UF uf=new UF(n);
+    for(int[] edge:edges){
+        int u=edge[0];
+        int v=edge[1];
+        int w=edge[2];
+        if(uf.connected(u,v))
+            continue;
+        uf.union(u,v);
+        mst+=w;
+    }
+    return mst;
+}
+class UF{
+    private int partent[];
+    private int size[];
+    private int count;
+    public UF(int n){
+        partent=new int[n];
+        size=new int[n];
+        count=n;
+        for(int i=0;i<n;i++){
+            partent[i]=i;
+            size[i]=1;
+        }
+    }
+    public void union(int p,int q){
+        int rootp=find(p);
+        int rootq=find(q);
+        if(rootp==rootq)
+            return;
+        if(size[rootp]<size[rootq]){
+            partent[rootp]=rootq;
+            size[rootq]+=size[rootp];
+        }else {
+            partent[rootq]=rootp;
+            size[rootp]+=size[rootq];
+        }
+        count--;
+    }
+    public boolean connected(int p,int q){
+        int rootp=find(p);
+        int rootq=find(q);
+        return rootp==rootq;
+    }
+    public int find(int x){
+        while (partent[x]!=x){
+            partent[x]=partent[partent[x]];
+            x=partent[x];
+        }
+        return x;
+    }
+    public int count(){
+        return count;
+    }
+}
+```
+
+* 743.网络延迟时间
+
+```java
+public int networkDelayTime(int[][] times, int n, int k) {
+    List<int[]>[] graph=build(times,n);
+    int[] distTo=dijkstra(k,graph);
+    int res=0;
+    for(int i=1;i<distTo.length;i++){
+        if(distTo[i]==Integer.MAX_VALUE)
+            return -1;
+        res=Math.max(res,distTo[i]);
+    }
+    return res;
+}
+public List<int[]>[] build(int[][] times, int n){
+    List<int[]>[] graph=new LinkedList[n+1];
+    for(int i=1;i<=n;i++)
+        graph[i]=new LinkedList<>();
+    for(int[] time:times){
+        int u=time[0];
+        int v=time[1];
+        int w=time[2];
+        graph[u].add(new int[]{v,w});
+    }
+    return graph;
+}
+class State{
+    int id;
+    int dist;
+    public State(int id,int dist){
+        this.id=id;
+        this.dist=dist;
+    }
+}
+public int[] dijkstra(int start,List<int[]>[] graph){
+    int[] distTo=new int[graph.length];
+    Arrays.fill(distTo,Integer.MAX_VALUE);
+    distTo[start]=0;
+
+    Queue<State> pq=new PriorityQueue<>((a,b)->{return a.dist-b.dist;});
+    pq.offer(new State(start,0));
+
+    while (!pq.isEmpty()){
+        State cur=pq.poll();
+        int curId=cur.id;
+        int curDist=cur.dist;
+        if(distTo[curId]<curDist)
+            continue;
+        for(int[] neighbor:graph[curId]){
+            int nextId=neighbor[0];
+            int nextDist=neighbor[1]+distTo[curId];
+            if(nextDist<distTo[nextId]){
+                distTo[nextId]=nextDist;
+                pq.offer(new State(nextId,nextDist));
+            }
+        }
+    }
+    return distTo;
+}
+```

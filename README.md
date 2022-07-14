@@ -2269,3 +2269,74 @@ public int[] dijkstra(int start,List<int[]>[] graph){
     return distTo;
 }
 ```
+
+## 暴力搜索算法
+
+### 回溯算法速记卡
+
+* 46.全排列
+
+```java
+List<List<Integer>> res=new LinkedList<>();
+public List<List<Integer>> permute(int[] nums) {
+    LinkedList<Integer> track=new LinkedList<>();
+    backtrack(nums,track);
+    return res;
+}
+void backtrack(int[] nums,LinkedList<Integer> track){
+    if(track.size()==nums.length){
+        res.add(new LinkedList(track));
+        return;
+    }
+    for(int i=0;i<nums.length;i++){
+        if(track.contains(nums[i]))
+            continue;
+        track.add(nums[i]);
+        backtrack(nums,track);
+        track.removeLast();
+    }
+}
+```
+
+* 78.子集
+
+```java
+List<List<Integer>> res=new LinkedList<>();
+List<Integer> track=new LinkedList<>();
+public List<List<Integer>> subsets(int[] nums) {
+    backtrack(0,nums);
+    return res;
+}
+public void backtrack(int cur,int[] nums){
+    res.add(new LinkedList(track));
+    for(int i=cur;i<nums.length;i++){
+        track.add(nums[i]);
+        backtrack(i+1,nums);
+        track.remove(track.size()-1);
+    }
+}
+```
+
+* 77.组合
+
+```java
+List<List<Integer>> res=new LinkedList<>();
+List<Integer> track=new LinkedList<>();
+public List<List<Integer>> combine(int n, int k) {
+    if(n<=0||k<=0)
+        return res;
+    backtrace(1,n,k);
+    return res;
+}
+public void backtrace(int cur,int n,int k){
+    if(track.size()==k){
+        res.add(new LinkedList<>(track));
+        return;
+    }
+    for(int i=cur;i<=n;i++){
+        track.add(i);
+        backtrace(i+1,n,k);
+        track.remove(track.size()-1);
+    }
+}
+```

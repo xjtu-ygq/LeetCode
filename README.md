@@ -2340,3 +2340,68 @@ public void backtrace(int cur,int n,int k){
     }
 }
 ```
+
+* 39.组合总数
+
+```java
+List<List<Integer>> ygq=new LinkedList<>();
+List<Integer> track=new LinkedList<>();
+int sum=0;
+public List<List<Integer>> combinationSum(int[] candidates, int target) {
+    if(candidates.length==0)
+        return ygq;
+    backtrace(candidates,target,0);
+    return ygq;
+}
+public void backtrace(int[] candidates, int target,int start){
+    if(sum>target)
+        return;
+    if(sum==target){
+        ygq.add(new LinkedList<>(track));
+        return;
+    }
+    for(int i=start;i<candidates.length;i++){
+        track.add(candidates[i]);
+        sum+=candidates[i];
+        backtrace(candidates,target,i);
+        sum-=candidates[i];
+        track.remove(track.size()-1);
+    }
+}
+```
+
+* 17.电话号码的字母组合
+
+```java
+List<String> ygq=new LinkedList<>();
+Map<Character,String> map;
+public List<String> letterCombinations(String digits) {
+    map=new HashMap<>();
+    map.put('2',"abc");
+    map.put('3',"def");
+    map.put('4',"ghi");
+    map.put('5',"jkl");
+    map.put('6',"mno");
+    map.put('7',"pqrs");
+    map.put('8',"tuv");
+    map.put('9',"wxyz");
+    if(digits.length()==0)
+        return ygq;
+    backtrace(digits,0,new StringBuffer());
+    return ygq;
+}
+public void backtrace(String digits,int start,StringBuffer stringBuffer){
+    if(start==digits.length()){
+        ygq.add(stringBuffer.toString());
+        return;
+    }
+    char digit=digits.charAt(start);
+    String leters=map.get(digit);
+    int count=leters.length();
+    for(int i=0;i<count;i++){
+        stringBuffer.append(leters.charAt(i));
+        backtrace(digits,start+1,stringBuffer);
+        stringBuffer.deleteCharAt(start);
+    }
+}
+```

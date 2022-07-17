@@ -2405,3 +2405,90 @@ public void backtrace(String digits,int start,StringBuffer stringBuffer){
     }
 }
 ```
+
+* 37.解数独
+
+```java
+public void solveSudoku(char[][] board) {
+    backtrace(board,0,0);
+}
+public boolean backtrace(char[][] board,int i,int j){
+    if(j==9)
+        return backtrace(board,i+1,0);
+    if(i==9)
+        return true;
+    if(board[i][j]!='.')
+        return backtrace(board,i,j+1);
+    for(char ch='1';ch<='9';ch++){
+        if(!isvalid(board,i,j,ch))
+            continue;
+        board[i][j]=ch;
+        if(backtrace(board,i,j+1))
+            return true;
+        board[i][j]='.';
+
+    }
+    return false;
+}
+public boolean isvalid(char[][] board,int i,int j,char ch){
+    for(int k=0;k<9;k++){
+        if(board[i][k]==ch)
+            return false;
+        if(board[k][j]==ch)
+            return false;
+        if(board[(i/3)*3+k/3][(j/3)*3+k%3]==ch)
+            return false;
+    }
+    return true;
+}
+```
+
+* 51.N皇后
+
+```java
+List<List<String>> ygq=new LinkedList<>();
+public List<List<String>> solveNQueens(int n) {
+    char[][] board=new char[n][n];
+    for(char[] tmp:board)
+        Arrays.fill(tmp,'.');
+    backtrack(board,0);
+    return ygq;
+}
+public void backtrack(char[][] board,int row){
+    int n=board.length;
+    if(row==n){
+        ygq.add(Tolist(board));
+        return;
+    }
+    for(int col=0;col<n;col++){
+        if(!isvalid(board,row,col))
+            continue;
+        board[row][col]='Q';
+        backtrack(board,row+1);
+        board[row][col]='.';
+    }
+}
+public boolean isvalid(char[][] board,int row,int col){
+    int n=board.length;
+    for(int i=0;i<n;i++){
+        if(board[i][col]=='Q')
+            return false;
+    }
+    for(int i=row-1,j=col+1;i>=0&&j<n;i--,j++){
+        if(board[i][j]=='Q')
+            return false;
+    }
+    for(int i=row-1,j=col-1;i>=0&&j>=0;i--,j--){
+        if(board[i][j]=='Q')
+            return false;
+    }
+    return true;
+}
+public List<String> Tolist(char[][] board){
+    List<String> list=new LinkedList<>();
+    for(char[] tmp:board){
+        list.add(String.copyValueOf(tmp));
+    }
+    return list;
+}
+```

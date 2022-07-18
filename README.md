@@ -2492,3 +2492,56 @@ public List<String> Tolist(char[][] board){
     return list;
 }
 ```
+
+* 22.括号生成
+
+```java
+List<String> ygq=new LinkedList<>();
+public List<String> generateParenthesis(int n) {
+    backtrack(0,0,n,new StringBuffer());
+    return ygq;
+}
+public void backtrack(int left,int right,int n,StringBuffer stringBuffer){
+    if(stringBuffer.length()==n*2){
+        ygq.add(stringBuffer.toString());
+        return;
+    }
+    if(left<n){
+        stringBuffer.append('(');
+        backtrack(left+1,right,n,stringBuffer);
+        stringBuffer.deleteCharAt(stringBuffer.length()-1);
+    }
+    if(right<left){
+        stringBuffer.append(')');
+        backtrack(left,right+1,n,stringBuffer);
+        stringBuffer.deleteCharAt(stringBuffer.length()-1);
+    }
+}
+```
+
+* 494.目标和
+
+```java
+int sum=0;
+int count=0;
+public int findTargetSumWays(int[] nums, int target) {
+    backtrack(nums, target,0);
+    return count;
+}
+public void backtrack(int[] nums,int target,int start){
+    if(sum==target&&start==nums.length){
+        count++;
+        return;
+    }
+    if(start==nums.length){
+        return;
+    }
+    sum+=nums[start];
+    backtrack(nums,target,start+1);
+    sum-=nums[start];
+
+    sum-=nums[start];
+    backtrack(nums,target,start+1);
+    sum+=nums[start];
+}
+```

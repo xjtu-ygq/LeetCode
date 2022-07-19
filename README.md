@@ -2545,3 +2545,81 @@ public void backtrack(int[] nums,int target,int start){
     sum+=nums[start];
 }
 ```
+
+### DFS算法速记卡
+
+* 200.岛屿数量
+
+```java
+public int numIslands(char[][] grid) {
+    int m=grid.length;
+    int n=grid[0].length;
+    UF uf=new UF(m*n);
+    for(int i=0;i<m;i++){
+        for(int j=0;j<n;j++){
+            if(grid[i][j]=='1'){
+                if(i-1>=0&&grid[i-1][j]=='1')
+                    uf.union((i-1)*n+j,i*n+j);
+                if(i+1<m&&grid[i+1][j]=='1')
+                    uf.union((i+1)*n+j,i*n+j);
+                if(j-1>=0&&grid[i][j-1]=='1')
+                    uf.union(i*n+j-1,i*n+j);
+                if(j+1<n&&grid[i][j+1]=='1')
+                    uf.union(i*n+j+1,i*n+j);
+            }
+        }
+    }
+    Set<Integer> set=new HashSet<>();
+    for(int i=0;i<m;i++){
+        for(int j=0;j<n;j++){
+            if(grid[i][j]=='1'){
+                set.add(uf.find(i*n+j));
+            }
+        }
+    }
+    return set.size();
+}
+class UF{
+    private int count;
+    private int[] partent;
+    private int[] size;
+    public UF(int n){
+        this.count=n;
+        partent=new int[n];
+        size=new int[n];
+        for(int i=0;i<n;i++){
+            partent[i]=i;
+            size[i]=1;
+        }
+    }
+    public void union(int p,int q){
+        int rootp=find(p);
+        int rootq=find(q);
+        if(rootp==rootq)
+            return;
+        if(size[rootp]<size[rootq]){
+            partent[rootp]=rootq;
+            size[rootq]+=size[rootp];
+        }else{
+            partent[rootq]=rootp;
+            size[rootp]+=size[rootq];
+        }
+        count--;
+    }
+    public boolean connected(int p,int q){
+        int rootp=find(p);
+        int rootq=find(q);
+        return rootp==rootq;
+    }
+    public int find(int x){
+        while (x!=partent[x]){
+            partent[x]=partent[partent[x]];
+            x=partent[x];
+        }
+        return x;
+    }
+    public int getCount(){
+        return this.count;
+    }
+}
+```

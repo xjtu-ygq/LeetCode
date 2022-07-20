@@ -2623,3 +2623,263 @@ class UF{
     }
 }
 ```
+
+* 1254.统计封闭岛屿的数目
+
+```java
+public int closedIsland(int[][] grid) {
+    int m=grid.length;
+    int n=grid[0].length;
+    int dummy=m*n;
+    UF uf=new UF(m*n+1);
+    for(int i=0;i<m;i++){
+        for(int j=0;j<n;j++){
+            if(grid[i][j]==0){
+                if(i-1>=0&&grid[i-1][j]==0){
+                    uf.union(i*n+j,(i-1)*n+j);
+                }
+                if(i+1<m&&grid[i+1][j]==0){
+                    uf.union(i*n+j,(i+1)*n+j);
+                }
+                if(j-1>=0&&grid[i][j-1]==0){
+                    uf.union(i*n+j,i*n+j-1);
+                }
+                if(j+1<n&&grid[i][j+1]==0){
+                    uf.union(i*n+j,i*n+j+1);
+                }
+            }
+        }
+    }
+    for(int i=0;i<m;i++){
+        if(grid[i][0]==0)
+            uf.union(i*n+0,dummy);
+        if(grid[i][n-1]==0)
+            uf.union(i*n+n-1,dummy);
+    }
+    for(int j=0;j<n;j++){
+        if(grid[0][j]==0)
+            uf.union(0*n+j,dummy);
+        if(grid[m-1][j]==0)
+            uf.union((m-1)*n+j,dummy);
+    }
+    Set<Integer> set=new HashSet<>();
+    for(int i=0;i<m;i++){
+        for(int j=0;j<n;j++){
+            if(grid[i][j]==0){
+                set.add(uf.find(i*n+j));
+            }
+        }
+    }
+    set.add(uf.find(dummy));
+    return set.size()-1;
+}
+class UF{
+    private int[] partent;
+    private int[] size;
+    private int count;
+    public UF(int n){
+        this.count=n;
+        partent=new int[n];
+        size=new int[n];
+        for(int i=0;i<count;i++){
+            partent[i]=i;
+            size[i]=1;
+        }
+    }
+    public void union(int p,int q){
+        int rootp=find(p);
+        int rootq=find(q);
+        if(rootp==rootq)
+            return;
+        if(size[rootp]<size[rootq]){
+            partent[rootp]=rootq;
+            size[rootq]+=size[rootp];
+        }else {
+            partent[rootq]=rootp;
+            size[rootp]+=size[rootq];
+        }
+        count--;
+    }
+    public boolean connected(int p,int q){
+        int rootp=find(p);
+        int rootq=find(q);
+        return rootp==rootq;
+    }
+    public int find(int x){
+        while (x!=partent[x]){
+            partent[x]=partent[partent[x]];
+            x=partent[x];
+        }
+        return x;
+    }
+}
+```
+
+* 1020.飞地的数量
+
+```java
+public int numEnclaves(int[][] grid) {
+    int count=0;
+    int m=grid.length;
+    int n=grid[0].length;
+    UF uf=new UF(m*n+1);
+    int dummy=m*n;
+    for(int i=0;i<m;i++){
+        for(int j=0;j<n;j++){
+            if(grid[i][j]==1){
+                if(i-1>=0&&grid[i-1][j]==1)
+                    uf.union(i*n+j,(i-1)*n+j);
+                if(i+1<m&&grid[i+1][j]==1)
+                    uf.union(i*n+j,(i+1)*n+j);
+                if(j-1>=0&&grid[i][j-1]==1)
+                    uf.union(i*n+j,i*n+j-1);
+                if(j+1<n&&grid[i][j+1]==1)
+                    uf.union(i*n+j,i*n+j+1);
+            }
+        }
+    }
+    for(int i=0;i<m;i++){
+        if(grid[i][0]==1){
+            uf.union(i*n+0,dummy);
+        }
+        if(grid[i][n-1]==1){
+            uf.union(i*n+n-1,dummy);
+        }
+    }
+    for(int j=0;j<n;j++){
+        if(grid[0][j]==1)
+            uf.union(0*n+j,dummy);
+        if(grid[m-1][j]==1)
+            uf.union((m-1)*n+j,dummy);
+    }
+    for(int i=0;i<m;i++){
+        for(int j=0;j<n;j++){
+            if(grid[i][j]==1&&!uf.connected(i*n+j,dummy))
+                count++;
+        }
+    }
+    return count;
+}
+class UF{
+    private int[] partent;
+    private int[] size;
+    private int count;
+    public UF(int n){
+        this.count=n;
+        partent=new int[n];
+        size=new int[n];
+        for(int i=0;i<count;i++){
+            partent[i]=i;
+            size[i]=1;
+        }
+    }
+    public void union(int p,int q){
+        int rootp=find(p);
+        int rootq=find(q);
+        if(rootp==rootq)
+            return;
+        if(size[rootp]<size[rootq]){
+            partent[rootp]=rootq;
+            size[rootq]+=size[rootp];
+        }else {
+            partent[rootq]=rootp;
+            size[rootp]+=size[rootq];
+        }
+        count--;
+    }
+    public boolean connected(int p,int q){
+        int rootp=find(p);
+        int rootq=find(q);
+        return rootp==rootq;
+    }
+    public int find(int x){
+        while (x!=partent[x]){
+            partent[x]=partent[partent[x]];
+            x=partent[x];
+        }
+        return x;
+    }
+}
+```
+
+* 695.岛屿的最大面积
+
+```java
+public int maxAreaOfIsland(int[][] grid) {
+    int max=0;
+    int m=grid.length;
+    int n=grid[0].length;
+    UF uf=new UF(m*n);
+    for(int i=0;i<m;i++){
+        for(int j=0;j<n;j++){
+            if(grid[i][j]==1){
+                if(i-1>=0&&grid[i-1][j]==1){
+                    uf.union(i*n+j,(i-1)*n+j);
+                }
+                if(i+1<m&&grid[i+1][j]==1){
+                    uf.union(i*n+j,(i+1)*n+j);
+                }
+                if(j-1>=0&&grid[i][j-1]==1){
+                    uf.union(i*n+j,i*n+j-1);
+                }
+                if(j+1<n&&grid[i][j+1]==1){
+                    uf.union(i*n+j,i*n+j+1);
+                }
+            }
+        }
+    }
+    Map<Integer,Integer> map=new HashMap<>();
+    for(int i=0;i<m;i++){
+        for(int j=0;j<n;j++){
+            if(grid[i][j]==1){
+                int tmp=uf.find(i*n+j);
+                map.put(tmp,map.getOrDefault(tmp,0)+1);
+            }
+        }
+    }
+    for(int tmp:map.values())
+        max=Math.max(max,tmp);
+
+    return max;
+}
+class UF{
+    private int[] partent;
+    private int[] size;
+    private int count;
+    public UF(int n){
+        this.count=n;
+        partent=new int[n];
+        size=new int[n];
+        for(int i=0;i<count;i++){
+            partent[i]=i;
+            size[i]=1;
+        }
+    }
+    public void union(int p,int q){
+        int rootp=find(p);
+        int rootq=find(q);
+        if(rootp==rootq)
+            return;
+        if(size[rootp]<size[rootq]){
+            partent[rootp]=rootq;
+            size[rootq]+=size[rootp];
+        }else {
+            partent[rootq]=rootp;
+            size[rootp]+=size[rootq];
+        }
+        count--;
+    }
+    public boolean connected(int p,int q){
+        int rootp=find(p);
+        int rootq=find(q);
+        return rootp==rootq;
+    }
+    public int find(int x){
+        while (x!=partent[x]){
+            partent[x]=partent[partent[x]];
+            x=partent[x];
+        }
+        return x;
+    }
+}
+```

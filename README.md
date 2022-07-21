@@ -2883,3 +2883,85 @@ class UF{
     }
 }
 ```
+
+* 1905.统计子岛屿
+
+```java
+public int countSubIslands(int[][] grid1, int[][] grid2){
+    int max=0;
+    int m=grid1.length;
+    int n=grid1[0].length;
+    UF uf=new UF(m*n+1);
+    int dummy=m*n;
+    for(int i=0;i<m;i++){
+        for(int j=0;j<n;j++){
+            if(grid1[i][j]==0&&grid2[i][j]==1)
+                uf.union(i*n+j,dummy);
+            if(grid2[i][j]==1){
+                if(i-1>=0&&grid2[i-1][j]==1){
+                    uf.union(i*n+j,(i-1)*n+j);
+                }
+                if(i+1<m&&grid2[i+1][j]==1){
+                    uf.union(i*n+j,(i+1)*n+j);
+                }
+                if(j-1>=0&&grid2[i][j-1]==1){
+                    uf.union(i*n+j,i*n+j-1);
+                }
+                if(j+1<n&&grid2[i][j+1]==1){
+                    uf.union(i*n+j,i*n+j+1);
+                }
+            }
+        }
+    }
+    Set<Integer> set=new HashSet<>();
+    for(int i=0;i<m;i++){
+        for(int j=0;j<n;j++){
+            if(grid2[i][j]==1&&!uf.connected(i*n+j,dummy)){
+                int tmp=uf.find(i*n+j);
+                set.add(tmp);
+            }
+        }
+    }
+    return set.size();
+}
+class UF{
+    private int[] partent;
+    private int[] size;
+    private int count;
+    public UF(int n){
+        this.count=n;
+        partent=new int[n];
+        size=new int[n];
+        for(int i=0;i<count;i++){
+            partent[i]=i;
+            size[i]=1;
+        }
+    }
+    public void union(int p,int q){
+        int rootp=find(p);
+        int rootq=find(q);
+        if(rootp==rootq)
+            return;
+        if(size[rootp]<size[rootq]){
+            partent[rootp]=rootq;
+            size[rootq]+=size[rootp];
+        }else {
+            partent[rootq]=rootp;
+            size[rootp]+=size[rootq];
+        }
+        count--;
+    }
+    public boolean connected(int p,int q){
+        int rootp=find(p);
+        int rootq=find(q);
+        return rootp==rootq;
+    }
+    public int find(int x){
+        while (x!=partent[x]){
+            partent[x]=partent[partent[x]];
+            x=partent[x];
+        }
+        return x;
+    }
+}
+```

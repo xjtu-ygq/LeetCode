@@ -2965,3 +2965,107 @@ class UF{
     }
 }
 ```
+
+### BFS算法速记卡
+
+* 752.打开转盘锁
+
+```java
+public int openLock(String[] deadends, String target) {
+    Set<String> deads=new HashSet<>();
+    for(String s:deadends)
+        deads.add(s);
+    Set<String> visited=new HashSet<>();
+    Queue<String> queue=new LinkedList<>();
+    queue.add("0000");
+    visited.add("0000");
+    int step=0;
+    while (!queue.isEmpty()){
+        int size=queue.size();
+        for(int i=0;i<size;i++){
+            String cur=queue.poll();
+            if(deads.contains(cur))
+                continue;
+            if(cur.equals(target))
+                return step;
+            for(int j=0;j<4;j++){
+                String up=plusOne(cur,j);
+                if(!visited.contains(up)){
+                    queue.offer(up);
+                    visited.add(up);
+                }
+                String down=minusOne(cur,j);
+                if(!visited.contains(down)){
+                    queue.offer(down);
+                    visited.add(down);
+                }
+            }
+        }
+        step++;
+    }
+    return -1;
+}
+public String plusOne(String cur,int j){
+    char[] ch=cur.toCharArray();
+    if(ch[j]=='9')
+        ch[j]='0';
+    else
+        ch[j]+=1;
+    return new String(ch);
+}
+public String minusOne(String cur,int j){
+    char[] ch=cur.toCharArray();
+    if(ch[j]=='0')
+        ch[j]='9';
+    else
+        ch[j]-=1;
+    return new String(ch);
+}
+```
+
+* 773.滑动谜题
+
+```java
+public int slidingPuzzle(int[][] board) {
+    int m=2,n=3;
+    StringBuffer stringBuffer=new StringBuffer();
+    for(int i=0;i<m;i++){
+        for(int j=0;j<n;j++)
+            stringBuffer.append(board[i][j]);
+    }
+    String start=stringBuffer.toString();
+    String target="123450";
+    Queue<String> queue=new LinkedList<>();
+    Set<String> visited=new HashSet<>();
+    queue.add(start);
+    visited.add(start);
+    int step=0;
+    int[][] neighbor=new int[][]{{1,3},{0,2,4},{1,5},{0,4},{1,3,5},{2,4}};
+    while (!queue.isEmpty()){
+        int size=queue.size();
+        for(int i=0;i<size;i++){
+            String cur=queue.poll();
+            if(cur.equals(target))
+                return step;
+            int idx=0;
+            for(;cur.charAt(idx)!='0';idx++);
+            for(int idj:neighbor[idx]){
+                String tmp=swap(cur,idx,idj);
+                if(!visited.contains(tmp)){
+                    queue.offer(tmp);
+                    visited.add(tmp);
+                }
+            }
+        }
+        step++;
+    }
+    return -1;
+}
+public String swap(String cur,int idx,int idj){
+    char[] ch=cur.toCharArray();
+    char tmp=ch[idx];
+    ch[idx]=ch[idj];
+    ch[idj]=tmp;
+    return new String(ch);
+}
+```

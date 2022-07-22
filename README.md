@@ -3069,3 +3069,24 @@ public String swap(String cur,int idx,int idj){
     return new String(ch);
 }
 ```
+
+## 动态规划算法
+
+### 一维动态规划速记卡
+
+* 70.爬楼梯
+
+```java
+int[] dp;
+public int climbStairs(int n) {
+    dp=new int[n+1];
+    if(n<=2)
+        return n;
+    dp[1]=1;
+    dp[2]=2;
+    for(int i=3;i<=n;i++){
+        dp[i]=dp[i-1]+dp[i-2];
+    }
+    return dp[n];
+}
+```

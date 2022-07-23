@@ -3090,3 +3090,156 @@ public int climbStairs(int n) {
     return dp[n];
 }
 ```
+
+* 322.零钱兑换
+
+```java
+public int coinChange(int[] coins, int amount) {
+    int n=coins.length;
+    int[] dp=new int[amount+1];
+    Arrays.fill(dp,amount+1);
+    dp[0]=0;
+    for(int i=1;i<=amount;i++){
+        for(int j=0;j<n;j++){
+            if(coins[j]<=i)
+                dp[i]=Math.min(dp[i],dp[i-coins[j]]+1);
+        }
+    }
+    return dp[amount]>amount?-1:dp[amount];
+}
+```
+
+* 300.最长递增子序列
+
+```java
+public int lengthOfLIS(int[] nums) {
+    int count=0;
+    int[] dp=new int[nums.length];
+    Arrays.fill(dp,1);
+    for(int i=0;i<dp.length;i++){
+        for(int j=0;j<i;j++){
+            if(nums[j]<nums[i])
+                dp[i]=Math.max(dp[i],dp[j]+1);
+        }
+        count=Math.max(count,dp[i]);
+    }
+    return count;
+}
+```
+
+* 53.最大子数组和
+
+```java
+public int maxSubArray(int[] nums) {
+    int n=nums.length;
+    int[] dp=new int[n];
+    dp[0]=nums[0];
+    int max=nums[0];
+    for(int i=1;i<n;i++){
+        dp[i]=Math.max(nums[i],dp[i-1]+nums[i]);
+        max=Math.max(dp[i],max);
+    }
+    return max;
+}
+```
+
+* 55.跳跃游戏
+
+```java
+public boolean canJump(int[] nums) {
+    int n=nums.length;
+    int max=0;
+    for(int i=0;i<n-1;i++){
+        max=Math.max(max,nums[i]+i);
+        if(max<=i)
+            return false;
+    }
+    return max>=n-1;
+}
+```
+
+* 45.跳跃游戏
+
+```java
+public int jump(int[] nums) {
+    int count=0;
+    int n=nums.length;
+    int max=0;
+    int cur=0;
+    for(int i=0;i<n-1;i++){
+        max=Math.max(max,nums[i]+i);
+        if(cur==i){
+            count++;
+            cur=max;
+        }
+    }
+    return count;
+}
+```
+
+* 198.打家劫舍
+
+```java
+public int rob(int[] nums) {
+    int n=nums.length;
+    int[] dp=new int[n];
+    if(n==1)
+        return nums[0];
+    if(n==2)
+        return Math.max(nums[0],nums[1]);
+    dp[0]=nums[0];
+    dp[1]=Math.max(nums[0],nums[1]);
+    for(int i=2;i<n;i++){
+        dp[i]=Math.max(nums[i]+dp[i-2],dp[i-1]);
+    }
+    return dp[n-1];
+}
+```
+
+* 213.打家劫舍II
+
+```java
+public int rob(int[] nums) {
+    int n=nums.length;
+    if(n==1)
+        return nums[0];
+    if(n==2)
+        return Math.max(nums[0],nums[1]);
+    if(n==3){
+        return Math.max(Math.max(nums[0],nums[1]),nums[2]);
+    }
+    int[] dp=new int[n];
+    dp[0]=nums[0];
+    dp[1]=Math.max(nums[0],nums[1]);
+    int[] dp1=new int[n];
+    dp1[0]=0;dp1[1]=nums[1];
+    dp1[2]=Math.max(nums[1],nums[2]);
+    for(int i=2;i<n;i++){
+        dp[i]=Math.max(dp[i-1],nums[i]+dp[i-2]);
+    }
+    for(int i=3;i<n;i++){
+        dp1[i]=Math.max(dp1[i-1],nums[i]+dp1[i-2]);
+    }
+    return Math.max(dp[n-2],dp1[n-1]);
+}
+```
+
+* 337.打家劫舍III
+
+```java
+public int rob(TreeNode root) {
+    int[] ans=ygq(root);
+    return Math.max(ans[0],ans[1]);
+}
+public int[] ygq(TreeNode root){
+     if(root==null)
+         return new int[]{0,0};//根结点在最大值内，根结点不在最大值内
+     int[] left=ygq(root.left);
+     int[] right=ygq(root.right);
+     int max1=left[0]+right[0];
+     int max2=left[1]+right[1]+root.val;
+     max2=Math.max(max1,max2);
+     return new int[]{max2,max1};//注意顺序
+}
+```
+

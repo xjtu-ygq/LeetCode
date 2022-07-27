@@ -3521,3 +3521,30 @@ public int maxProfit(int[] prices, int fee) {
     return dp[n-1][0];
 }
 ```
+
+* 174.地下城游戏
+
+```java
+public int calculateMinimumHP(int[][] dungeon) {
+    int m=dungeon.length;
+    int n=dungeon[0].length;
+    int[][] dp=new int[m][n];
+    dp[m-1][n-1]=Math.max(0,-dungeon[m-1][n-1]);
+    for(int i=m-2;i>=0;i--){
+        int tmp=dp[i+1][n-1]-dungeon[i][n-1];
+        dp[i][n-1]=Math.max(0,tmp);
+    }
+    for(int j=n-2;j>=0;j--){
+        int tmp=dp[m-1][j+1]-dungeon[m-1][j];
+        dp[m-1][j]=Math.max(0,tmp);
+    }
+    for(int i=m-2;i>=0;i--){
+        for(int j=n-2;j>=0;j--){
+            int tmp=Math.min(dp[i+1][j],dp[i][j+1]);
+            tmp=tmp-dungeon[i][j];
+            dp[i][j]=Math.max(0,tmp);
+        }
+    }
+    return dp[0][0]+1;
+}
+```

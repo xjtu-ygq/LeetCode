@@ -3548,3 +3548,50 @@ public int calculateMinimumHP(int[][] dungeon) {
     return dp[0][0]+1;
 }
 ```
+
+* 剑指 Offer II 119. 最长连续序列
+
+```java
+public int longestConsecutive(int[] nums) {
+    int n=nums.length;
+    Arrays.sort(nums);
+    if(n==0)
+        return 0;
+    int count=1;
+    int[] dp=new int[n];
+    Arrays.fill(dp,1);
+    for(int i=1;i<n;i++){
+        if(nums[i]==nums[i-1]+1){
+            dp[i]=dp[i-1]+1;
+            count=Math.max(count,dp[i]);
+        }else if(nums[i]==nums[i-1]){
+            dp[i]=dp[i-1];
+        }
+    }
+    return count;
+}
+```
+
+* 面试题 10.03. 搜索旋转数组
+
+```java
+public int search(int[] arr, int target) {
+    Map<Integer,Integer> map=new HashMap<>();
+    for(int i=0;i<arr.length;i++){
+        if(!map.containsKey(arr[i]))
+            map.put(arr[i],i);
+    }
+    Arrays.sort(arr);
+    int left=0,right=arr.length-1;
+    while (left<=right){
+        int mid=left+(right-left)/2;
+        if(arr[mid]<target)
+            left=mid+1;
+        else if(arr[mid]>target)
+            right=mid-1;
+        else
+            return map.get(arr[mid]);
+    }
+    return -1;
+}
+```

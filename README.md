@@ -3158,7 +3158,7 @@ public boolean canJump(int[] nums) {
 }
 ```
 
-* 45.跳跃游戏
+* 45.跳跃游戏II
 
 ```java
 public int jump(int[] nums) {
@@ -3593,5 +3593,31 @@ public int search(int[] arr, int target) {
             return map.get(arr[mid]);
     }
     return -1;
+}
+```
+
+* 312.戳气球
+
+```java
+public int maxCoins(int[] nums) {
+    int n=nums.length;
+    int[] tmp=new int[n+2];
+    tmp[0]=1;
+    tmp[n+1]=1;
+    for(int i=0;i<n;i++)
+        tmp[i+1]=nums[i];
+    int[][] dp=new int[n+2][n+2];
+    for(int len=3;len<=n+2;len++){
+        for(int i=0;i<=n+2-len;i++){
+            int res=0;
+            for(int k=i+1;k<i+len-1;k++){
+                int left=dp[i][k];
+                int right=dp[k][i+len-1];
+                res=Math.max(res,left+tmp[i]*tmp[k]*tmp[i+len-1]+right);
+            }
+            dp[i][i+len-1]=res;
+        }
+    }
+    return dp[0][n+1];
 }
 ```

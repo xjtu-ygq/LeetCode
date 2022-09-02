@@ -178,3 +178,51 @@ public int numSubarrayProductLessThanK(int[] nums, int k) {
     return ans;
 }
 ```
+
+* 剑指 Offer II 010. 和为 k 的子数组
+
+```java
+public int subarraySum(int[] nums, int k) {
+    int ans=0;
+    int n=nums.length;
+    int dp[]=new int[n+1];
+    dp[0]=0;
+    for(int i=1;i<=n;i++){
+        dp[i]=dp[i-1]+nums[i-1];
+    }
+    for(int i=0;i<n;i++){
+        for(int j=i+1;j<=n;j++){
+            if(dp[j]-dp[i]==k)
+                ans++;
+        }
+    }
+    return ans;
+}
+```
+
+* 剑指 Offer II 011. 0 和 1 个数相同的子数组
+
+```java
+public int findMaxLength(int[] nums) {
+    int maxLength = 0;
+    Map<Integer, Integer> map = new HashMap<Integer, Integer>();
+    int counter = 0;
+    map.put(counter, -1);
+    int n = nums.length;
+    for (int i = 0; i < n; i++) {
+        int num = nums[i];
+        if (num == 1) {
+            counter++;
+        } else {
+            counter--;
+        }
+        if (map.containsKey(counter)) {
+            int prevIndex = map.get(counter);
+            maxLength = Math.max(maxLength, i - prevIndex);
+        } else {
+            map.put(counter, i);
+        }
+    }
+    return maxLength;
+}
+```

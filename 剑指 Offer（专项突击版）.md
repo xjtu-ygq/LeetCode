@@ -301,3 +301,104 @@ public boolean checkInclusion(String s1, String s2) {
     return false;
 }
 ```
+
+* 剑指 Offer II 015. 字符串中的所有变位词
+
+```java
+public List<Integer> findAnagrams(String s, String p) {
+    List<Integer> ans=new ArrayList<>();
+    Map<Character,Integer> window=new HashMap<>();
+    Map<Character,Integer> need=new HashMap<>();
+    for(char c:p.toCharArray()){
+        need.put(c,need.getOrDefault(c,0)+1);
+    }
+    int left=0,right=0;
+    int valid=0;
+    while (right<s.length()){
+        char c=s.charAt(right);
+        right++;
+        if(need.containsKey(c)){
+            window.put(c,window.getOrDefault(c,0)+1);
+            if(window.get(c).equals(need.get(c))){
+                valid++;
+            }
+        }
+        while (right-left>=p.length()){
+            if(valid==need.size()){
+                ans.add(left);
+            }
+            char d=s.charAt(left);
+            left++;
+            if(need.containsKey(d)){
+                if(need.get(d).equals(window.get(d))){
+                    valid--;
+                }
+                window.put(d,window.get(d)-1);
+            }
+        }
+    }
+    return ans;
+}
+```
+
+* 剑指 Offer II 016. 不含重复字符的最长子字符串
+
+```java
+public int lengthOfLongestSubstring(String s) {
+    int ans=0;
+    Map<Character,Integer> map=new HashMap<>();
+    int left=0,right=0;
+    while (right<s.length()){
+        char c=s.charAt(right);
+        right++;
+        map.put(c,map.getOrDefault(c,0)+1);
+        while (map.get(c)>1){
+            char d=s.charAt(left);
+            left++;
+            map.put(d,map.get(d)-1);
+        }
+        ans=Math.max(ans,right-left);
+    }
+    return ans;
+}
+```
+
+* 剑指 Offer II 017. 含有所有字符的最短字符串
+
+```java
+public String minWindow(String s, String t) {
+    Map<Character,Integer> window=new HashMap<>();
+    Map<Character,Integer> need=new HashMap<>();
+    for(char c:t.toCharArray()){
+        need.put(c,need.getOrDefault(c,0)+1);
+    }
+    int left=0,right=0;
+    int valid=0;
+    int len=Integer.MAX_VALUE,start=0;
+    while (right<s.length()){
+        char c=s.charAt(right);
+        right++;
+        if(need.containsKey(c)){
+            window.put(c,window.getOrDefault(c,0)+1);
+            if(window.get(c).equals(need.get(c))){
+                valid++;
+            }
+        }
+        while (valid==need.size()){
+            if(right-left<len){
+                len=right-left;
+                start=left;
+            }
+            char d=s.charAt(left);
+            left++;
+            if(need.containsKey(d)){
+                if(need.get(d).equals(window.get(d))){
+                    valid--;
+                }
+                window.put(d,window.get(d)-1);
+            }
+        }
+    }
+    return len==Integer.MAX_VALUE?"":s.substring(start,start+len);
+}
+```

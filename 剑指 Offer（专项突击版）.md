@@ -226,3 +226,78 @@ public int findMaxLength(int[] nums) {
     return maxLength;
 }
 ```
+
+* 剑指 Offer II 012. 左右两边子数组的和相等
+
+```java
+public int pivotIndex(int[] nums) {
+    int total=Arrays.stream(nums).sum();
+    int sum=0;
+    for(int i=0;i<nums.length;i++){
+        if(2*sum+nums[i]==total)
+            return i;
+        sum+=nums[i];
+    }
+    return -1;
+}
+```
+
+* 剑指 Offer II 013. 二维子矩阵的和
+
+```java
+private int[][] ans;
+public NumMatrix(int[][] matrix) {
+    ans=new int[matrix.length+1][matrix[0].length+1];
+    for(int i=0;i<ans.length;i++){
+        ans[i][0]=0;
+    }
+    for(int j=0;j<ans[0].length;j++){
+        ans[0][j]=0;
+    }
+    for(int i=1;i<ans.length;i++){
+        for(int j=1;j<ans[0].length;j++){
+            ans[i][j]=matrix[i-1][j-1]+ans[i-1][j]+ans[i][j-1]-ans[i-1][j-1];
+        }
+    }
+}
+
+public int sumRegion(int row1, int col1, int row2, int col2) {
+    return ans[row2+1][col2+1]-ans[row1][col2+1]-ans[row2+1][col1]+ans[row1][col1];
+}
+```
+
+* 剑指 Offer II 014. 字符串中的变位词
+
+```java
+public boolean checkInclusion(String s1, String s2) {
+    Map<Character,Integer> window=new HashMap<>();
+    Map<Character,Integer> need=new HashMap<>();
+    for(char c:s1.toCharArray()){
+        need.put(c,need.getOrDefault(c,0)+1);
+    }
+    int left=0,right=0;
+    int valid=0;
+    while (right<s2.length()){
+        char c=s2.charAt(right);
+        right++;
+        if(need.containsKey(c)){
+            window.put(c,window.getOrDefault(c,0)+1);
+            if(window.get(c).equals(need.get(c)))
+                valid++;
+        }
+        while (right-left>=s1.length()){
+            if(valid==need.size())
+                return true;
+            char d=s2.charAt(left);
+            left++;
+            if(need.containsKey(d)){
+                if(need.get(d).equals(window.get(d))){
+                    valid--;
+                }
+                window.put(d,window.get(d)-1);
+            }
+        }
+    }
+    return false;
+}
+```

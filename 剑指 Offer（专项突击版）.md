@@ -476,3 +476,174 @@ public int countSubstrings(String s) {
     return ans;
 }
 ```
+
+* 剑指 Offer II 021. 删除链表的倒数第 n 个结点
+
+```java
+public ListNode removeNthFromEnd(ListNode head, int n) {
+    ListNode dummy=new ListNode(-1);
+    dummy.next=head;
+    ListNode slow=dummy,fast=dummy;
+    for(int i=0;i<n;i++){
+        fast=fast.next;
+    }
+    while (fast.next!=null){
+        fast=fast.next;
+        slow=slow.next;
+    }
+    slow.next=slow.next.next;
+    return dummy.next;
+}
+```
+
+* 剑指 Offer II 022. 链表中环的入口节点
+
+```java
+public ListNode detectCycle(ListNode head) {
+    if(head==null)
+        return null;
+    ListNode slow=head,fast=head;
+    while (fast.next!=null&&fast.next.next!=null){
+        fast=fast.next.next;
+        slow=slow.next;
+        if(slow==fast){
+            fast=head;
+            while (fast!=slow){
+                fast=fast.next;
+                slow=slow.next;
+            }
+            return slow;
+        }
+    }
+    return null;
+}
+```
+
+* 剑指 Offer II 023. 两个链表的第一个重合节点
+
+```java
+public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+    ListNode p1=headA;
+    while (p1!=null){
+        ListNode p2=headB;
+        while (p2!=null){
+            if(p1==p2)
+                return p1;
+            p2=p2.next;
+        }
+        p1=p1.next;
+    }
+    return null;
+}
+```
+
+* 剑指 Offer II 024. 反转链表
+
+```java
+public ListNode reverseList(ListNode head) {
+    ListNode dummy=new ListNode(-1);
+    ListNode p=head;
+    while (p!=null){
+        ListNode ptmp=p.next;
+        ListNode tmp=dummy.next;
+        dummy.next=p;
+        p.next=tmp;
+        p=ptmp;
+    }
+    return dummy.next;
+}
+```
+
+* 剑指 Offer II 025. 链表中的两数相加
+
+```java
+public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+    ListNode listNode1=reverse(l1);
+    ListNode listNode2=reverse(l2);
+    ListNode p1=listNode1,p2=listNode2;
+    ListNode dummy=new ListNode(-1);
+    int carry=0;
+    while (p1!=null||p2!=null||carry!=0){
+        int val=carry;
+        if(p1!=null){
+            val+=p1.val;
+            p1=p1.next;
+        }
+        if(p2!=null){
+            val+=p2.val;
+            p2=p2.next;
+        }
+        carry=val/10;
+        val=val%10;
+        ListNode p=new ListNode(val);
+        ListNode tmp=dummy.next;
+        dummy.next=p;
+        p.next=tmp;
+    }
+    return dummy.next;
+}
+public ListNode reverse(ListNode head){
+    ListNode dummy=new ListNode(-1);
+    ListNode p=head;
+    while (p!=null){
+        ListNode tmp=dummy.next;
+        dummy.next=p;
+        p=p.next;
+        dummy.next.next=tmp;
+    }
+    return dummy.next;
+}
+```
+
+* 剑指 Offer II 026. 重排链表
+
+```java
+public void reorderList(ListNode head) {
+    if (head == null) {
+        return;
+    }
+    ListNode mid = middleNode(head);
+    ListNode l1 = head;
+    ListNode l2 = mid.next;
+    mid.next = null;
+    l2 = reverseList(l2);
+    mergeList(l1, l2);
+}
+
+public ListNode middleNode(ListNode head) {
+    ListNode slow = head;
+    ListNode fast = head;
+    while (fast.next != null && fast.next.next != null) {
+        slow = slow.next;
+        fast = fast.next.next;
+    }
+    return slow;
+}
+
+public ListNode reverseList(ListNode head) {
+    ListNode prev = null;
+    ListNode curr = head;
+    while (curr != null) {
+        ListNode nextTemp = curr.next;
+        curr.next = prev;
+        prev = curr;
+        curr = nextTemp;
+    }
+    return prev;
+}
+
+public void mergeList(ListNode l1, ListNode l2) {
+    ListNode l1_tmp;
+    ListNode l2_tmp;
+    while (l1 != null && l2 != null) {
+        l1_tmp = l1.next;
+        l2_tmp = l2.next;
+
+        l1.next = l2;
+        l1 = l1_tmp;
+
+        l2.next = l1;
+        l2 = l2_tmp;
+    }
+}
+```

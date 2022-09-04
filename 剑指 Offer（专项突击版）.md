@@ -402,3 +402,77 @@ public String minWindow(String s, String t) {
     return len==Integer.MAX_VALUE?"":s.substring(start,start+len);
 }
 ```
+
+* 剑指 Offer II 018. 有效的回文
+
+```java
+public boolean isPalindrome(String s) {
+    int left=0,right=s.length()-1;
+    while (left<right){
+        while (left<right&&!Character.isLetterOrDigit(s.charAt(left))){
+            left++;
+        }
+        while (left<right&&!Character.isLetterOrDigit(s.charAt(right))){
+            right--;
+        }
+        if(left<right){
+            if(Character.toLowerCase(s.charAt(left))!=Character.toLowerCase(s.charAt(right))){
+                System.out.println(s.charAt(left));
+                System.out.println(s.charAt(right));
+                return false;
+            }
+            left++;
+            right--;
+        }
+    }
+    return true;
+}
+```
+
+* 剑指 Offer II 019. 最多删除一个字符得到回文
+
+```java
+public boolean validPalindrome(String s) {
+    int left=0,right=s.length()-1;
+    while (left<right){
+        if(s.charAt(left)!=s.charAt(right)){
+            if(isPalindrome(s.substring(left,right))||isPalindrome(s.substring(left+1,right+1))){
+                return true;
+            }else
+                return false;
+        }
+        left++;
+        right--;
+    }
+    return true;
+}
+public boolean isPalindrome(String s){
+    int left=0,right=s.length()-1;
+    while (left<right){
+        if(s.charAt(left)!=s.charAt(right)){
+            return false;
+        }
+        left++;
+        right--;
+    }
+    return true;
+}
+```
+
+* 剑指 Offer II 020. 回文子字符串的个数
+
+```java
+public int countSubstrings(String s) {
+    int ans=0;
+    int n=s.length();
+    for(int i=0;i<n*2-1;i++){
+        int left=i/2,right=i/2+i%2;
+        while (left>=0&&right<n&&s.charAt(left)==s.charAt(right)){
+            left--;
+            right++;
+            ans++;
+        }
+    }
+    return ans;
+}
+```

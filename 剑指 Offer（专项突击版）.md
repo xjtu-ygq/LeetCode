@@ -647,3 +647,104 @@ public void mergeList(ListNode l1, ListNode l2) {
     }
 }
 ```
+
+* 剑指 Offer II 027. 回文链表
+
+```java
+public boolean isPalindrome(ListNode head) {
+    ListNode dummy=new ListNode(-1);
+    ListNode p=head;
+    while (p!=null){
+        ListNode tmp=dummy.next;
+        dummy.next=new ListNode(p.val);
+        p=p.next;
+        dummy.next.next=tmp;
+    }
+    ListNode p1=dummy.next;
+    while (head!=null){
+        if(p1.val!= head.val)
+            return false;
+        head=head.next;
+        p1=p1.next;
+    }
+    return true;
+}
+```
+
+* 剑指 Offer II 028. 展平多级双向链表
+
+```java
+private Node cur;
+public Node flatten(Node head) {
+    if(head==null)
+        return null;
+    cur=head;
+    Node next=head.next;
+    Node child=head.child;
+    if(child!=null){
+        cur.child=null;
+        cur.next=child;
+        child.prev=cur;
+        cur=child;
+        flatten(cur);
+    }
+    if(next!=null){
+        cur.next=next;
+        next.prev=cur;
+        cur=next;
+        flatten(cur);
+    }
+    return head;
+}
+```
+
+* 剑指 Offer II 032. 有效的变位词
+
+```java
+//    public boolean isAnagram(String s, String t) {
+//        if(s.equals(t))
+//            return false;
+//        char[] s1=s.toCharArray();
+//        char[] t1=t.toCharArray();
+//        Arrays.sort(s1);
+//        Arrays.sort(t1);
+//        if(s1.length!=t1.length)
+//            return false;
+//        for(int i=0;i<s1.length;i++){
+//            if(s1[i]!=t1[i])
+//                return false;
+//        }
+//        return true;
+//    }
+    public boolean isAnagram(String s, String t) {
+        if(s.equals(t))
+            return false;
+        char[] s1=s.toCharArray();
+        Arrays.sort(s1);
+        String s2=new String(s1);
+        char[] t1=t.toCharArray();
+        Arrays.sort(t1);
+        String t2=new String(t1);
+        if(s2.equals(t2))
+            return true;
+        else
+            return false;
+    }
+```
+
+* 剑指 Offer II 033. 变位词组
+
+```java
+public List<List<String>> groupAnagrams(String[] strs) {
+    Map<String,List<String>> map=new HashMap<>();
+    for(String str:strs){
+        char[] strtmp=str.toCharArray();
+        Arrays.sort(strtmp);
+        String key=new String(strtmp);
+        List<String> list=map.getOrDefault(key,new ArrayList<String>());
+        list.add(str);
+        map.put(key,list);
+    }
+    return new ArrayList<>(map.values());
+}
+```

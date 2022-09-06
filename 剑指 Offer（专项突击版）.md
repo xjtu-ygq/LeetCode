@@ -748,3 +748,89 @@ public List<List<String>> groupAnagrams(String[] strs) {
     return new ArrayList<>(map.values());
 }
 ```
+
+* 剑指 Offer II 035. 最小时间差
+
+```java
+public int findMinDifference(List<String> timePoints) {
+    Collections.sort(timePoints);
+    int ans=Integer.MAX_VALUE;
+    for(int i=1;i<timePoints.size();i++){
+        int minute=calMinute(timePoints.get(i),timePoints.get(i-1));
+        ans=Math.min(ans,minute);
+    }
+    ans=Math.min(ans,calMinute(timePoints.get(0),timePoints.get(timePoints.size()-1)));
+    return ans;
+}
+public int calMinute(String s,String t){
+    int min1=((s.charAt(0)-'0')*10+(s.charAt(1)-'0'))*60+(s.charAt(3)-'0')*10+(s.charAt(4)-'0');
+    int min2=((t.charAt(0)-'0')*10+(t.charAt(1)-'0'))*60+(t.charAt(3)-'0')*10+(t.charAt(4)-'0');
+    int min=Math.abs(min1-min2);
+    return Math.min(min,Math.abs(1440-min));
+}
+```
+
+* 剑指 Offer II 036. 后缀表达式
+
+```java
+public int evalRPN(String[] tokens) {
+    Stack<Integer> stack=new Stack<>();
+    for(String token:tokens){
+        if(token.equals("+")||token.equals("-")||token.equals("*")||token.equals("/")){
+            int num1=stack.pop();
+            int num2=stack.pop();
+            if(token.equals("+")){
+                stack.push(num1+num2);
+            }else if(token.equals("-")){
+                stack.push(num2-num1);
+            }else if(token.equals("*")){
+                stack.push(num1*num2);
+            }else if(token.equals("/")){
+                stack.push(num2/num1);
+            }
+        }else {
+            stack.push(Digit(token));
+        }
+    }
+    return stack.pop();
+}
+public int Digit(String str){
+    int sum=0;
+    for(int i=0;i<str.length();i++){
+        char c=str.charAt(i);
+        if(Character.isDigit(c)){
+            sum=sum*10+(c-'0');
+        }
+    }
+    char c=str.charAt(0);
+    if(c=='-')
+        sum=sum*(-1);
+    return sum;
+}
+```
+
+* 剑指 Offer II 037. 小行星碰撞
+
+```java
+public int[] asteroidCollision(int[] asteroids) {
+    Deque<Integer> stack = new ArrayDeque<Integer>();
+    for (int aster : asteroids) {
+        boolean alive = true;
+        while (alive && aster < 0 && !stack.isEmpty() && stack.peek() > 0) {
+            alive = stack.peek() < -aster; // aster 是否存在
+            if (stack.peek() <= -aster) {  // 栈顶小行星爆炸
+                stack.pop();
+            }
+        }
+        if (alive) {
+            stack.push(aster);
+        }
+    }
+    int size = stack.size();
+    int[] ans = new int[size];
+    for (int i = size - 1; i >= 0; i--) {
+        ans[i] = stack.pop();
+    }
+    return ans;
+}
+```

@@ -834,3 +834,20 @@ public int[] asteroidCollision(int[] asteroids) {
     return ans;
 }
 ```
+
+* 剑指 Offer II 038. 每日温度
+
+```java
+public int[] dailyTemperatures(int[] temperatures) {
+    int[] ans=new int[temperatures.length];
+    for(int i=0;i<ans.length;i++){
+        for(int j=i+1;j<ans.length;j++){
+            if(temperatures[i]<temperatures[j]){
+                ans[i]=j-i;
+                break;
+            }
+        }
+    }
+    return ans;
+}
+```

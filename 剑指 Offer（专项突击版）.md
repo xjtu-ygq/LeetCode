@@ -851,3 +851,112 @@ public int[] dailyTemperatures(int[] temperatures) {
     return ans;
 }
 ```
+
+* 剑指 Offer II 039. 直方图最大矩形面积
+
+```java
+public int largestRectangleArea(int[] heights) {
+    Stack<Integer> stack=new Stack<>();
+    int[] left=new int[heights.length];
+    int[] right=new int[heights.length];
+    for(int i=0;i<heights.length;i++){
+        while (!stack.isEmpty()&&heights[stack.peek()]>=heights[i]){
+            stack.pop();
+        }
+        left[i]=stack.isEmpty()?-1:stack.peek();
+        stack.push(i);
+    }
+    stack.clear();
+    for(int i=heights.length-1;i>=0;i--){
+        while (!stack.isEmpty()&&heights[stack.peek()]>=heights[i]){
+            stack.pop();
+        }
+        right[i]=stack.isEmpty()?heights.length:stack.peek();
+        stack.push(i);
+    }
+    int ans=0;
+    for(int i=0;i<heights.length;i++){
+        ans=Math.max(ans,(right[i]-left[i]-1)*heights[i]);
+    }
+    return ans;
+}
+```
+
+* 剑指 Offer II 041. 滑动窗口的平均值
+
+```java
+Queue<Integer> queue;
+int size;
+int sum=0;
+public MovingAverage(int size) {
+    queue=new LinkedList<>();
+    this.size=size;
+}
+
+public double next(int val) {
+    sum+=val;
+    queue.offer(val);
+    if(queue.size()>size){
+        sum-=queue.poll();
+    }
+    return 1.0*sum/queue.size();
+}
+```
+
+* 剑指 Offer II 042. 最近请求次数
+
+```java
+Queue<Integer> queue;
+int num=3000;
+public RecentCounter() {
+    queue=new ArrayDeque<>();
+}
+
+public int ping(int t) {
+    while (!queue.isEmpty()&&t-queue.peek()>num){
+        queue.poll();
+    }
+    queue.offer(t);
+    return queue.size();
+}
+```
+
+* 剑指 Offer II 043. 往完全二叉树添加节点
+
+```java
+Queue<TreeNode> queue;
+Queue<TreeNode> que;
+TreeNode root;
+public CBTInserter(TreeNode root) {
+    this.root=root;
+    queue=new ArrayDeque<>();
+    que=new ArrayDeque<>();
+    queue.offer(root);
+    while (!queue.isEmpty()){
+        TreeNode tmp=queue.poll();
+        if(tmp.left!=null)
+            queue.offer(tmp.left);
+        if(tmp.right!=null)
+            queue.offer(tmp.right);
+        if(tmp.left==null||tmp.right==null)
+            que.offer(tmp);
+    }
+}
+
+public int insert(int v) {
+    TreeNode vnode=new TreeNode(v);
+    TreeNode tmp=que.peek();
+    que.offer(vnode);
+    if(tmp.left==null)
+        tmp.left=vnode;
+    else if(tmp.right==null){
+        tmp.right=vnode;
+        return que.poll().val;
+    }
+    return que.peek().val;
+}
+
+public TreeNode get_root() {
+    return root;
+}
+```

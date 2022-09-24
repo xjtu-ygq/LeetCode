@@ -960,3 +960,128 @@ public TreeNode get_root() {
     return root;
 }
 ```
+
+* 剑指 Offer II 044. 二叉树每层的最大值
+
+```java
+public List<Integer> largestValues(TreeNode root) {
+    List<Integer> ans=new ArrayList<>();
+    Queue<TreeNode> queue=new ArrayDeque<>();
+    if(root==null)
+        return new ArrayList<>();
+    queue.add(root);
+    while (!queue.isEmpty()){
+        int len=queue.size();
+        int max=Integer.MIN_VALUE;
+        while (len>0){
+            TreeNode tmp=queue.poll();
+            max=Math.max(max,tmp.val);
+            len=len-1;
+            if(tmp.left!=null)
+                queue.add(tmp.left);
+            if(tmp.right!=null)
+                queue.add(tmp.right);
+        }
+        ans.add(max);
+    }
+    return ans;
+}
+```
+
+* 剑指 Offer II 045. 二叉树最底层最左边的值
+
+```java
+public int findBottomLeftValue(TreeNode root) {
+    int ans=root.val;
+    Queue<TreeNode> queue=new ArrayDeque<>();
+    queue.add(root);
+    while (!queue.isEmpty()){
+        int size=queue.size();
+        ans=queue.peek().val;
+        while (size>0){
+            TreeNode tmp=queue.poll();
+            if(tmp.left!=null)
+                queue.add(tmp.left);
+            if(tmp.right!=null)
+                queue.add(tmp.right);
+            size--;
+        }
+    }
+    return ans;
+}
+```
+
+* 剑指 Offer II 046. 二叉树的右侧视图
+
+```java
+public List<Integer> rightSideView(TreeNode root) {
+    List<Integer> list=new ArrayList<>();
+    Queue<TreeNode> queue=new ArrayDeque<>();
+    if(root==null)
+        return new ArrayList<>();
+    queue.add(root);
+    while (!queue.isEmpty()){
+        int size=queue.size();
+        list.add(queue.peek().val);
+        while (size>0){
+            TreeNode tmp=queue.poll();
+            if(tmp.right!=null)
+                queue.add(tmp.right);
+            if(tmp.left!=null)
+                queue.add(tmp.left);
+            size--;
+        }
+    }
+    return list;
+}
+```
+
+* 剑指 Offer II 047. 二叉树剪枝
+
+```java
+public TreeNode pruneTree(TreeNode root) {
+    if(root==null)
+        return null;
+    root.left=pruneTree(root.left);
+    root.right=pruneTree(root.right);
+    if(root.left==null&&root.right==null&&root.val==0)
+        return null;
+    return root;
+}
+```
+
+* 剑指 Offer II 048. 序列化与反序列化二叉树
+
+```java
+String str="";
+// Encodes a tree to a single string.
+public String serialize(TreeNode root) {
+    if(root==null)
+        str+="None,";
+    else {
+        str+=String.valueOf(root.val)+",";
+        serialize(root.left);
+        serialize(root.right);
+    }
+    return str;
+}
+
+// Decodes your encoded data to tree.
+public TreeNode deserialize(String data) {
+    String[] datastr=data.split(",");
+    List<String> list=new ArrayList<>(Arrays.asList(datastr));
+    return redeserialize(list);
+}
+
+public TreeNode redeserialize(List<String> list){
+    if(list.get(0).equals("None")){
+        list.remove(0);
+        return null;
+    }
+    TreeNode root=new TreeNode(Integer.valueOf(list.get(0)));
+    list.remove(0);
+    root.left=redeserialize(list);
+    root.right=redeserialize(list);
+    return root;
+}
+```

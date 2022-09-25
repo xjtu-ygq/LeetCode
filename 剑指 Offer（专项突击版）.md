@@ -1085,3 +1085,74 @@ public TreeNode redeserialize(List<String> list){
     return root;
 }
 ```
+
+* 剑指 Offer II 049. 从根节点到叶节点的路径数字之和
+
+```java
+public int sumNumbers(TreeNode root) {
+    int ans=0;
+    Queue<TreeNode> queue=new ArrayDeque<>();
+    queue.add(root);
+    while (!queue.isEmpty()){
+        int size=queue.size();
+        while (size>0){
+            TreeNode tmp=queue.poll();
+            if(tmp.left!=null){
+                tmp.left.val+=tmp.val*10;
+                queue.offer(tmp.left);
+            }
+            if(tmp.right!=null){
+                tmp.right.val+=tmp.val*10;
+                queue.offer(tmp.right);
+            }
+            if(tmp.right==null&&tmp.left==null){
+                ans+=tmp.val;
+            }
+            size--;
+        }
+    }
+    return ans;
+}
+```
+
+* 剑指 Offer II 050. 向下的路径节点之和
+
+```java
+public int pathSum(TreeNode root, int targetSum) {
+    if(root==null)
+        return 0;
+    int ans=rootsum(root,targetSum);
+    ans+=pathSum(root.left,targetSum);
+    ans+=pathSum(root.right,targetSum);
+    return ans;
+}
+public int rootsum(TreeNode root,long target){
+    int ans=0;
+    if(root==null)
+        return 0;
+    if(root.val==target)
+        ans++;
+    ans+=rootsum(root.left,target-root.val);
+    ans+=rootsum(root.right,target-root.val);
+    return ans;
+}
+```
+
+* 剑指 Offer II 051. 节点之和最大的路径
+
+```java
+private int max=Integer.MIN_VALUE;
+public int maxPathSum(TreeNode root) {
+    rootSum(root);
+    return max;
+}
+public int rootSum(TreeNode root){
+    if(root==null)
+        return 0;
+    int left=Math.max(rootSum(root.left),0);
+    int right=Math.max(rootSum(root.right),0);
+    int sum=root.val+left+right;
+    max=Math.max(max,sum);
+    return root.val+Math.max(left,right);
+}
+```

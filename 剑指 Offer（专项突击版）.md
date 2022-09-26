@@ -1212,3 +1212,37 @@ public void BST(TreeNode root){
     BST(root.left);
 }
 ```
+
+* 剑指 Offer II 055. 二叉搜索树迭代器
+
+```java
+private List<TreeNode> list;
+public BSTIterator(TreeNode root) {
+    list=new ArrayList<>();
+    BST(root);
+}
+
+public void BST(TreeNode root){
+    if(root==null)
+        return;
+    BST(root.left);
+    list.add(root);
+    BST(root.right);
+}
+
+public int next() {
+    if(!list.isEmpty()){
+        int ans=list.get(0).val;
+        list.remove(0);
+        return ans;
+    }
+    return 0;
+}
+
+public boolean hasNext() {
+    if(!list.isEmpty())
+        return true;
+    else
+        return false;
+}
+```

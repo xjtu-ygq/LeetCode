@@ -1156,3 +1156,59 @@ public int rootSum(TreeNode root){
     return root.val+Math.max(left,right);
 }
 ```
+
+* 剑指 Offer II 052. 展平二叉搜索树
+
+```java
+private TreeNode p;
+public TreeNode increasingBST(TreeNode root) {
+    TreeNode dummy=new TreeNode(-1);
+    p=dummy;
+    BST(root);
+    return dummy.right;
+}
+public void BST(TreeNode root){
+    if(root==null)
+        return;
+    BST(root.left);
+    p.right=root;
+    root.left=null;
+    p=root;
+    BST(root.right);
+}
+```
+
+* 剑指 Offer II 053. 二叉搜索树中的中序后继
+
+```java
+private TreeNode ans;
+public TreeNode inorderSuccessor(TreeNode root, TreeNode p) {
+    if(root==null)
+        return null;
+    if(p.val>=root.val){
+        return inorderSuccessor(root.right,p);
+    }else {
+        ans=root;
+        inorderSuccessor(root.left,p);
+    }
+    return ans==null?root:ans;
+}
+```
+
+* 剑指 Offer II 054. 所有大于等于节点的值之和
+
+```java
+private int sum=0;
+public TreeNode convertBST(TreeNode root) {
+    BST(root);
+    return root;
+}
+public void BST(TreeNode root){
+    if(root==null)
+        return;
+    BST(root.right);
+    root.val+=sum;
+    sum=root.val;
+    BST(root.left);
+}
+```
